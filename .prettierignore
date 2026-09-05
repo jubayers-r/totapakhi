@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# Vite production build output
+dist/
+dist-ssr/
+
+# Vite cache & local env files
+.vite/
+*.local
+.env*.local
+
+# Logs and coverage
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+coverage/
+
+# Lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+bun.lockb
