@@ -320,13 +320,13 @@
     justify-content: flex-start;
   }
   .tp-reel-strip.settled .tp-reel-item.landed {
-    transform: scale(1.5);
+    transform: scale(1.6);
   }
 }
 
 @media (max-width: 480px) {
   .tp-reel-strip.settled .tp-reel-item.landed {
-    transform: scale(1.2);
+    transform: scale(1.5);
   }
 }
 

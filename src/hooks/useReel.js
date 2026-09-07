@@ -3,8 +3,7 @@ import { playLand, playTick } from '@/lib/sounds';
 
 function getItemHeight() {
   if (typeof window === 'undefined') return 130;
-  if (window.innerWidth <= 480) return 100;
-  if (window.innerWidth <= 768) return 120;
+  if (window.innerWidth <= 480) return 120;
   return 130;
 }
 
@@ -29,8 +28,8 @@ function splitAtSpace(text, pos) {
 
 function fitTextToWidth(items, containerWidth) {
   const w = typeof window === 'undefined' ? 1440 : window.innerWidth;
-  const maxFontSize = w <= 480 ? 1.6 : w <= 768 ? 2.0 : 3.5;
-  const minFontSize = w <= 480 ? 0.75 : w <= 768 ? 0.95 : 1.15;
+  const maxFontSize = w <= 480 ? 2.0 : w <= 768 ? 2.4 : 3.5;
+  const minFontSize = w <= 480 ? 0.85 : w <= 768 ? 1.0 : 1.15;
   const wrapThreshold = w <= 480 ? 10 : w <= 768 ? 12 : 15;
 
   for (const item of items) {

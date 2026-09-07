@@ -150,13 +150,13 @@ export default function TopicsPanel({ onStartTimer }) {
           <div className="flex min-w-0 flex-1 flex-col items-center">
             <div
               ref={windowRef}
-              className="relative mt-[75px] h-[390px] w-full overflow-hidden shadow-[inset_0_20px_30px_-20px_rgba(0,0,0,0.06),inset_0_-20px_30px_-20px_rgba(0,0,0,0.06)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,black_20%,black_80%,transparent_100%)] [mask-image:linear-gradient(to_bottom,transparent_0%,black_20%,black_80%,transparent_100%)] max-md:mt-0 max-md:h-[360px] max-md:min-w-0 portrait:min-[769px]:max-[1024px]:mt-0 portrait:min-[769px]:max-[1024px]:h-[300px] portrait:min-[769px]:max-[1024px]:min-w-0 max-[480px]:h-[300px]"
+              className="relative mt-[75px] h-[390px] w-full overflow-hidden shadow-[inset_0_20px_30px_-20px_rgba(0,0,0,0.06),inset_0_-20px_30px_-20px_rgba(0,0,0,0.06)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,black_20%,black_80%,transparent_100%)] [mask-image:linear-gradient(to_bottom,transparent_0%,black_20%,black_80%,transparent_100%)] max-md:mt-0 max-md:h-[380px] max-md:min-w-0 portrait:min-[769px]:max-[1024px]:mt-0 portrait:min-[769px]:max-[1024px]:h-[380px] portrait:min-[769px]:max-[1024px]:min-w-0 max-[480px]:h-[360px]"
             >
               <div
                 ref={stripRef}
                 className="tp-reel-strip absolute left-0 top-0 w-full will-change-transform"
               />
-              <div className="pointer-events-none absolute top-1/2 left-1/2 z-[2] h-[130px] w-[80%] -translate-x-1/2 -translate-y-1/2 border-y border-[rgba(26,60,52,0.08)] max-md:h-[120px] portrait:min-[769px]:max-[1024px]:h-[100px] max-[480px]:h-[100px]" />
+              <div className="pointer-events-none absolute top-1/2 left-1/2 z-[2] h-[130px] w-[80%] -translate-x-1/2 -translate-y-1/2 border-y border-[rgba(26,60,52,0.08)] max-md:h-[130px] portrait:min-[769px]:max-[1024px]:h-[130px] max-[480px]:h-[120px]" />
             </div>
             <div className="mt-[30px] flex justify-center gap-3 max-md:hidden portrait:min-[769px]:max-[1024px]:hidden">
               <button
