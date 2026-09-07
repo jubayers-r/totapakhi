@@ -294,6 +294,7 @@
   left: 50%;
   transform: translateX(-50%);
   width: 140px;
+  max-width: none;
   height: auto;
   opacity: 0.55;
   pointer-events: none;
@@ -313,8 +314,7 @@
    trigger) inside a zoomed containing context on small screens. */
 
 /* Tablet portrait (<=1024) & phone (<=768): scrolling body */
-@media (max-width: 1024px) and (orientation: portrait),
-  (max-width: 768px) {
+@media (max-width: 1024px) and (orientation: portrait), (max-width: 768px) {
   body {
     overflow-y: auto;
     justify-content: flex-start;
