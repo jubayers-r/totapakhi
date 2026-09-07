@@ -109,7 +109,7 @@ export default function Lever({ onSpin, disabled }) {
   }, [handleRelease]);
 
   return (
-    <div className="flex flex-col items-center">
+    <>
       <div
         ref={hintRef}
         className={`tp-pull-hint -rotate-12 font-[cursive] text-xl font-extrabold text-[#518174] ${hintShown ? '' : 'tp-hidden'}`}
@@ -131,10 +131,12 @@ export default function Lever({ onSpin, disabled }) {
           role="button"
           tabIndex={-1}
           aria-label="টপিক নিতে লিভার টানুন"
-        />
+        >
+          <div className="tp-handle-knob-grip" />
+        </div>
         <div className="tp-handle-shaft" />
       </div>
       <div className="tp-handle-pivot" />
-    </div>
+    </>
   );
 }

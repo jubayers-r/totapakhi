@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import TopicsPanel from '@/components/topics/TopicsPanel';
 import InterviewPanel from '@/components/interview/InterviewPanel';
 import TimerPanel from '@/components/timer/TimerPanel';
@@ -10,61 +9,58 @@ export default function App() {
   const [timerTopic, setTimerTopic] = useState(null);
   const [timerKey, setTimerKey] = useState(0);
 
+  function goTo(m) {
+    setMode(m);
+  }
+
   function startTimer(topic) {
     setTimerTopic(topic ?? null);
     setTimerKey((k) => k + 1);
     setMode('timer');
   }
 
+  const tabs = [
+    { id: 'topics', label: 'Random Topics' },
+    { id: 'interview', label: 'Interview Prep' },
+  ];
+
   return (
-    <main className="min-h-screen overflow-hidden bg-[radial-gradient(circle_at_61%_50%,#fffdf8_0,#faf6ec_42%,#f7f2e7_100%)] text-[#173f37]">
-      <header className="grid h-14 grid-cols-[1fr_auto] items-center border-b border-[#ece6d8] px-5 text-sm font-semibold sm:px-[7.5%] lg:grid-cols-[1fr_auto_1fr]">
-        <a
-          className="justify-self-start font-display text-xl font-black text-[#075345]"
-          href="#top"
-          onClick={(e) => {
-            e.preventDefault();
-            setMode('topics');
-          }}
-        >
-          তোতাপাখি
-        </a>
-        <nav className="hidden items-center gap-1 lg:flex" aria-label="Main navigation">
-          <Tabs value={mode} onValueChange={setMode}>
-            <TabsList variant="line" className="gap-2">
-              <TabsTrigger value="topics">র‍্যান্ডম টপিক</TabsTrigger>
-              <TabsTrigger value="interview">ইন্টারভিউ প্রস্তুতি</TabsTrigger>
-              <TabsTrigger value="timer">টাইমার</TabsTrigger>
-            </TabsList>
-          </Tabs>
-        </nav>
-        <span className="justify-self-end font-[cursive] text-lg font-extrabold text-[#3f776c] -rotate-3 sm:text-xl">
-          say step to the mic
-        </span>
-      </header>
+    <main className="min-h-screen overflow-hidden bg-[#f9f5eb] text-[#1a3c34]">
+      {/* fixed tab bar, original style */}
+      <div className="fixed top-4 left-1/2 z-15 flex max-w-[calc(100vw-1.5rem)] -translate-x-1/2 gap-2 overflow-x-auto rounded-[50px] bg-[rgba(26,60,52,0.08)] p-[5px] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {tabs.map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => goTo(tab.id)}
+            className={`relative whitespace-nowrap rounded-[50px] px-7 py-[0.6rem] font-sans text-[1.05rem] font-semibold transition-colors ${
+              mode === tab.id
+                ? 'bg-[#f9f5eb] text-[#1a3c34] shadow-[0_2px_6px_rgba(26,60,52,0.14)]'
+                : 'bg-transparent text-[#1a3c34] hover:bg-[rgba(26,60,52,0.06)]'
+            }`}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
 
-      <Tabs value={mode} onValueChange={setMode} className="mt-4 px-5 sm:px-[7.5%] lg:mt-0 lg:hidden">
-        <TabsList className="mx-auto flex w-full max-w-md">
-          <TabsTrigger value="topics">র‍্যান্ডম</TabsTrigger>
-          <TabsTrigger value="interview">ইন্টারভিউ</TabsTrigger>
-          <TabsTrigger value="timer">টাইমার</TabsTrigger>
-        </TabsList>
-      </Tabs>
+      {/* brand badge, original top-right */}
+      <span className="fixed top-4 right-1.5 z-10 rotate-[-3deg] font-[cursive] text-lg font-extrabold text-[#3f776c] sm:text-xl">
+        say step to the mic
+      </span>
 
-      <Tabs value={mode} onValueChange={setMode}>
-        <TabsContent value="topics" className="data-hidden:hidden">
-          <TopicsPanel onStartTimer={startTimer} />
-        </TabsContent>
-        <TabsContent value="interview" className="data-hidden:hidden">
-          <InterviewPanel />
-        </TabsContent>
-        <TabsContent
-          value="timer"
-          className="data-hidden:hidden data-hidden:pointer-events-none"
-        >
+      {mode === 'topics' && <TopicsPanel onStartTimer={startTimer} />}
+      {mode === 'interview' && <InterviewPanel onBack={() => setMode('topics')} />}
+      {mode === 'timer' && (
+        <div className="flex min-h-screen flex-col items-center justify-center px-4 pt-16">
+          <button
+            onClick={() => setMode('topics')}
+            className="mb-4 cursor-pointer rounded-full border-2 border-[#1a3c34] bg-transparent px-6 py-2 font-display text-lg font-bold text-[#1a3c34] transition-colors hover:bg-[#1a3c34] hover:text-[#f9f5eb]"
+          >
+            ← র‍্যান্ডম টপিক
+          </button>
           <TimerPanel key={timerKey + (timerTopic ?? '')} topic={timerTopic} initialDuration={60} />
-        </TabsContent>
-      </Tabs>
+        </div>
+      )}
     </main>
   );
 }

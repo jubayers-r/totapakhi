@@ -17,6 +17,16 @@ function shuffleArray(array) {
   return shuffled;
 }
 
+function splitAtSpace(text, pos) {
+  for (let j = pos; j >= 0; j--) {
+    if (text[j] === ' ') return j;
+  }
+  for (let j = pos; j < text.length; j++) {
+    if (text[j] === ' ') return j;
+  }
+  return -1;
+}
+
 function fitTextToWidth(items, containerWidth) {
   const w = typeof window === 'undefined' ? 1440 : window.innerWidth;
   const maxFontSize = w <= 480 ? 1.6 : w <= 768 ? 2.0 : 3.5;
@@ -30,31 +40,43 @@ function fitTextToWidth(items, containerWidth) {
 
     if (text.length > wrapThreshold) {
       const mid = Math.floor(text.length / 2);
-      let bestBreak = -1;
-      for (let j = mid; j >= 0; j--) {
-        if (text[j] === ' ') {
-          bestBreak = j;
-          break;
+      const bestBreak = splitAtSpace(text, mid);
+
+      if (wordCount > 8 && bestBreak > 0) {
+        const third1 = Math.floor(text.length / 3);
+        const third2 = Math.floor(2 * text.length / 3);
+        const break1 = splitAtSpace(text, third1);
+        const break2 = splitAtSpace(text, Math.max(third2, break1 + 1));
+
+        if (break1 > 0 && break2 > break1) {
+          item.innerHTML =
+            text.substring(0, break1) +
+            '<br>' +
+            text.substring(break1 + 1, break2) +
+            '<br>' +
+            text.substring(break2 + 1);
+        } else if (bestBreak > 0) {
+          item.innerHTML =
+            text.substring(0, bestBreak) +
+            '<br>' +
+            text.substring(bestBreak + 1);
+        } else {
+          item.textContent = text;
         }
+      } else if (bestBreak > 0) {
+        item.innerHTML =
+          text.substring(0, bestBreak) +
+          '<br>' +
+          text.substring(bestBreak + 1);
       }
-      if (bestBreak === -1) {
-        for (let j = mid; j < text.length; j++) {
-          if (text[j] === ' ') {
-            bestBreak = j;
-            break;
-          }
-        }
-      }
-      if (wordCount > 5 && bestBreak > 0) {
-        item.textContent = text.substring(0, bestBreak) + '\n' + text.substring(bestBreak + 1);
-      }
+
       const sizeMultiplier = wordCount > 8 ? 0.38 : 0.55;
       item.style.fontSize = maxFontSize * sizeMultiplier + 'rem';
+      item.style.lineHeight = '1.15';
     } else {
       item.style.fontSize = maxFontSize + 'rem';
     }
 
-    // Universal overflow check: shrink font while still exceeds container
     if (item.scrollWidth > containerWidth) {
       let size = parseFloat(item.style.fontSize);
       while (size > minFontSize && item.scrollWidth > containerWidth) {

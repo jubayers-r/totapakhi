@@ -142,22 +142,24 @@
   position: relative;
   overflow: hidden;
   width: 100%;
-  max-width: 1080px;
   height: 390px;
-  margin: 0 auto;
-  background: radial-gradient(circle at 61% 50%, #fffdf8 0%, #faf6ec 42%, #f7f2e7 100%);
-  border-radius: 1.2rem;
+  margin-top: 75px;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+  box-shadow: inset 0 20px 30px -20px rgba(0, 0, 0, 0.06), inset 0 -20px 30px -20px rgba(0, 0, 0, 0.06);
 }
 
 @media (max-width: 768px) {
   .tp-reel-window {
-    height: 360px;
+    height: 300px;
+    margin-top: 0;
   }
 }
 
 @media (max-width: 480px) {
   .tp-reel-window {
     height: 300px;
+    margin-top: 0;
   }
 }
 
@@ -246,15 +248,52 @@
 }
 
 /* ===================== Slot lever ===================== */
+.slot-handle {
+  width: 60px;
+  min-height: 390px;
+  flex-shrink: 0;
+  position: relative;
+  overflow: visible;
+}
+
+.tp-handle-pivot {
+  position: absolute;
+  bottom: 108px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%, #3a6a5e, #1a3c34);
+  border: 2px solid #1a3c34;
+  z-index: 4;
+}
+
+.tp-handle-pivot::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%, #5a8a7e, #2a5a4e);
+}
+
 .tp-handle-arm {
-  transform-origin: bottom center;
+  position: absolute;
+  bottom: 120px;
+  left: 50%;
+  width: 6px;
+  height: 80px;
+  transform-origin: center bottom;
   transform: rotate(0deg);
   transition: transform 0.1s ease;
   cursor: grab;
   touch-action: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  z-index: 3;
+  display: block;
 }
 
 .tp-handle-arm.grabbing {
@@ -278,41 +317,69 @@
   50% { transform: translateY(14px); }
 }
 
+.tp-handle-shaft {
+  width: 6px;
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(to right, #2a5a4e, #1a3c34);
+}
+
 .tp-handle-knob {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  border: 3px solid #193d36;
-  background: linear-gradient(135deg, #f0dbff, #b899ed);
-  box-shadow: 0 2px 6px rgba(26, 60, 52, 0.25);
+  background: radial-gradient(circle at 35% 35%, #e8d8ff, #d4c0f9 50%, #b89ee8);
+  border: 2px solid #1a3c34;
+  cursor: grab;
+  touch-action: none;
+  box-shadow: 0 2px 6px rgba(26, 60, 52, 0.2);
   z-index: 2;
 }
 
-.tp-handle-shaft {
-  width: 10px;
-  height: 88px;
-  background: linear-gradient(90deg, #1d4b41, #27584d);
-  border-radius: 4px;
-}
-
-.tp-handle-pivot {
-  width: 54px;
-  height: 22px;
-  border-radius: 12px;
-  background: linear-gradient(180deg, #c7d4cd, #a9bcb3);
-  box-shadow: 0 3px 8px rgba(26, 60, 52, 0.3);
+.tp-handle-knob-grip {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(26, 60, 52, 0.15) 3px,
+    rgba(26, 60, 52, 0.15) 5px
+  );
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .tp-pull-hint {
-  max-width: 70px;
-  margin-bottom: 0.75rem;
-  opacity: 0.9;
+  position: absolute;
+  bottom: 230px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 140px;
+  text-align: center;
+  opacity: 0.55;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 1;
 }
 
 .tp-pull-hint.hidden,
 .tp-pull-hint.tp-hidden {
   opacity: 0;
   transition: opacity 0.3s ease;
+}
+
+@media (max-width: 1024px) {
+  .slot-handle {
+    display: none;
+  }
 }
 
 /* ===================== Timer ring ===================== */

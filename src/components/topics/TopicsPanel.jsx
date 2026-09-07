@@ -1,6 +1,5 @@
 import { useCallback, useMemo } from 'react';
-import { ChevronDown, Dice5, UserRound } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Dice5, UserRound } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,10 +13,10 @@ import { usePersistence } from '@/hooks/usePersistence';
 import Lever from './Lever';
 import { playClunk, ensureAudioContext } from '@/lib/sounds';
 
-const CATEGORY_LIST = Object.values(CATEGORIES).filter((category) => category.id !== 'random');
+const CATEGORY_LIST = Object.values(CATEGORIES).filter((c) => c.id !== 'random');
 
-const selectClass =
-  'inline-flex h-11 items-center gap-2 rounded-full border border-[#ccd3c7] bg-[#fbf9f1] px-4 text-sm font-bold text-[#21493f] transition-colors hover:bg-[#f0ecdf] data-[popup-open]:bg-[#f0ecdf]';
+const triggerClass =
+  'inline-flex items-center gap-[6px] rounded-[20px] border-[1.5px] border-[rgba(26,60,52,0.25)] bg-transparent px-6 py-[0.6rem] font-sans text-[1.05rem] font-semibold text-[#1a3c34] cursor-pointer select-none transition-colors hover:border-[rgba(26,60,52,0.5)] hover:bg-[rgba(26,60,52,0.04)]';
 
 export default function TopicsPanel({ onStartTimer }) {
   const [categoryId, setCategoryId] = usePersistence('impromptu-category', 'random');
@@ -30,15 +29,17 @@ export default function TopicsPanel({ onStartTimer }) {
         : topicsByCategory[categoryId] ?? [];
     if (!source.length) return [];
     const allowedGenders =
-      gender === 'all' ? ['neutral', 'male', 'female'] : gender === 'male' ? ['neutral', 'male'] : ['neutral', 'female'];
+      gender === 'all'
+        ? ['neutral', 'male', 'female']
+        : gender === 'male'
+          ? ['neutral', 'male']
+          : ['neutral', 'female'];
     let eligible = source.filter((item) => allowedGenders.includes(item.gender));
     if (!eligible.length) eligible = source;
     return eligible;
   }, [categoryId, gender]);
 
-  const { windowRef, stripRef, spin, isSpinning, lastLanded } = useReel({
-    topics: pool,
-  });
+  const { windowRef, stripRef, spin, isSpinning, lastLanded } = useReel({ topics: pool });
 
   const effectiveTopic = lastLanded;
 
@@ -48,47 +49,45 @@ export default function TopicsPanel({ onStartTimer }) {
       playClunk();
       spin(velocity);
     },
-    [spin]
+    [spin],
   );
 
   const currentCategory = CATEGORIES[categoryId];
 
   return (
-    <section
-      id="practice"
-      className="mx-auto grid w-[calc(100%_-_48px)] max-w-[1130px] grid-cols-1 items-center gap-5 py-9 md:max-w-[600px] lg:max-w-[1130px] lg:grid-cols-[42%_52%_6%] lg:py-0"
-    >
-      <div className="px-0 text-center lg:pl-5 lg:text-left">
-        <p className="mb-1 font-[cursive] text-lg font-extrabold text-[#e6a446] -rotate-8">
-          চর্চা শুরু করি
-        </p>
-        <h1 className="grid font-display text-[clamp(62px,7vw,96px)] font-bold leading-[.68] tracking-[-.05em] text-[#075345] [text-shadow:6px_9px_0_#c7d4cd]">
-          <span>কথা</span>
-          <span className="ml-5">বলো</span>
+    <div className="mx-auto flex w-full max-w-[1400px] flex-col items-center gap-6 px-12 pb-8 pt-[calc(2rem+50px)] lg:min-h-screen lg:flex-row lg:items-center lg:justify-center lg:gap-12 lg:px-12">
+      {/* ---- left panel ---- */}
+      <div className="flex w-[450px] max-w-full flex-col items-center text-center">
+        <h1 className="font-display text-5xl font-black tracking-tight text-[#075345] sm:text-6xl">
+          তোতাপাখি
         </h1>
-        <div className="mx-auto my-6 h-5 w-36 rotate-[-3deg] rounded-[40%_55%] border-t-[9px] border-[#efad4a] lg:mx-0 lg:ml-36 lg:mb-7" />
-        <ol className="mb-6 inline-block list-none p-0 text-left font-[cursive] text-[clamp(20px,1.9vw,30px)] font-black leading-[1.48] text-[#41796e]">
-          <li>১) র‍্যান্ডম টপিক নাও</li>
-          <li>২) ১ মিনিট টাইমার সেট করো</li>
-          <li>
-            ৩) কথা বলো <span className="text-[#e6a446]">↘</span>
-          </li>
-        </ol>
-        <br />
-        <Button className="h-12 rounded-md bg-[#174b40] px-7 text-xs font-extrabold text-[#fffdf5] shadow-md hover:bg-[#103d34] sm:px-10">
+        <p className="mt-8 font-[cursive] text-[clamp(16px,1.8vw,22px)] font-extrabold leading-relaxed text-[#41796e]">
+          ১) টপিক নাও
+          <br />
+          ২) ১ মিনিট টাইমার সেট করো
+          <br />৩) কথা বলো ↘
+        </p>
+        <a
+          href="https://offthecuffspeech.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-5 inline-block rounded-[8px] border-2 border-[#1a3c34] bg-gradient-to-br from-[#2a5a4e] to-[#1a3c34] px-12 py-[0.7rem] font-display text-lg font-bold text-[#f9f5eb] shadow-[0_4px_12px_rgba(26,60,52,0.3)] transition-all hover:scale-[1.03] hover:shadow-[0_6px_16px_rgba(26,60,52,0.45)] active:scale-[0.97]"
+        >
           GET SPEECH ANALYSIS
-        </Button>
+        </a>
       </div>
 
-      <div className="relative pt-4">
-        <div className="mb-4 flex flex-wrap justify-center gap-2 lg:justify-end">
+      {/* ---- right panel ---- */}
+      <div className="flex flex-1 flex-col items-center">
+        {/* dropdowns */}
+        <div className="z-20 mb-2 flex flex-wrap items-center justify-center gap-2 translate-x-[-38px] translate-y-[20px]">
           <DropdownMenu>
-            <DropdownMenuTrigger className={selectClass}>
-              <Dice5 size={16} />
+            <DropdownMenuTrigger className={triggerClass}>
+              <Dice5 size={18} />
               {currentCategory.label}
-              <ChevronDown size={13} />
+              <span className="ml-auto text-[0.6rem]">▼</span>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="w-[245px] rounded-xl border border-[#d9ddcf] bg-[#fffdf7] p-1.5 shadow-xl">
+            <DropdownMenuContent align="start" className="w-[245px] rounded-xl border border-[#d9ddcf] bg-[#f9f5eb] p-1.5 shadow-xl">
               <DropdownMenuItem
                 className="rounded-lg p-2 text-left text-[15px] text-[#19483d] focus:bg-[#edf2e9]"
                 onClick={() => setCategoryId('random')}
@@ -109,12 +108,12 @@ export default function TopicsPanel({ onStartTimer }) {
           </DropdownMenu>
 
           <DropdownMenu>
-            <DropdownMenuTrigger className={selectClass}>
-              <UserRound size={16} />
+            <DropdownMenuTrigger className={triggerClass}>
+              <UserRound size={18} />
               {gender === 'all' ? 'সবার জন্য' : gender === 'male' ? 'পুরুষ' : 'নারী'}
-              <ChevronDown size={13} />
+              <span className="ml-auto text-[0.6rem]">▼</span>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-40 rounded-xl border border-[#d9ddcf] bg-[#fffdf7] p-1.5 shadow-xl">
+            <DropdownMenuContent align="end" className="w-40 rounded-xl border border-[#d9ddcf] bg-[#f9f5eb] p-1.5 shadow-xl">
               {[
                 { value: 'all', label: 'সবার জন্য' },
                 { value: 'male', label: 'পুরুষ' },
@@ -132,68 +131,52 @@ export default function TopicsPanel({ onStartTimer }) {
           </DropdownMenu>
         </div>
 
-        <p className="mb-4 text-center font-display text-[15px] font-bold text-[#c7d0c7]">
-          আজকের কথার বিষয়
-        </p>
-
-        <div className="reel-assembly flex items-start justify-center gap-0 lg:gap-3">
-          <div className="topic-col w-full max-w-[620px]">
+        {/* reel assembly */}
+        <div className="reel-assembly flex w-full items-stretch gap-4">
+          <div className="topic-col flex flex-1 flex-col items-center">
             <div ref={windowRef} className="tp-reel-window">
               <div ref={stripRef} className="tp-reel-strip" />
               <div className="tp-reel-center-line" />
             </div>
-            <div className="desktop-btn-row mt-5 hidden justify-center gap-3 sm:flex">
-              <Button
+            <div className="desktop-btn-row mt-8 hidden justify-center gap-3 sm:flex">
+              <button
                 onClick={() => triggerSpin(30)}
                 disabled={isSpinning}
-                className="h-11 min-w-24 cursor-pointer rounded-full bg-[#174b40] px-6 text-sm font-extrabold text-[#fffdf5] hover:bg-[#103d34] disabled:cursor-not-allowed disabled:opacity-60"
+                className="inline-block rounded-full border-2 border-[#1a3c34] bg-gradient-to-br from-[#2a5a4e] to-[#1a3c34] px-9 py-[0.6rem] font-display text-xl font-bold text-[#f9f5eb] shadow-[0_4px_12px_rgba(26,60,52,0.3)] transition-all hover:scale-[1.05] hover:shadow-[0_6px_16px_rgba(26,60,52,0.4)] active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 Spin!
-              </Button>
-              <Button
-                variant="outline"
+              </button>
+              <button
                 onClick={() => onStartTimer(effectiveTopic)}
-                className="h-11 cursor-pointer rounded-full border-[#174b40] bg-transparent px-5 text-sm font-extrabold text-[#174b40] hover:bg-[#eaf0e9] sm:px-7"
+                className="inline-block rounded-full border-2 border-[#1a3c34] bg-transparent px-9 py-[0.6rem] font-display text-xl font-bold text-[#1a3c34] transition-colors hover:bg-[#1a3c34] hover:text-[#f9f5eb]"
               >
                 Start Timer →
-              </Button>
+              </button>
             </div>
           </div>
-          <div className="slot-handle mt-4 hidden lg:flex" aria-hidden="true">
+
+          <div className="slot-handle relative hidden w-[60px] shrink-0 flex-col items-center lg:flex" aria-hidden="true">
             <Lever onSpin={triggerSpin} disabled={isSpinning} />
           </div>
         </div>
 
-        <div className="mobile-btn-row mt-6 flex justify-center gap-3 sm:hidden">
-          <Button
+        {/* mobile buttons */}
+        <div className="mobile-btn-row mt-6 hidden justify-center gap-3 sm:hidden">
+          <button
             onClick={() => triggerSpin(30)}
             disabled={isSpinning}
-            className="h-11 min-w-24 cursor-pointer rounded-full bg-[#174b40] px-6 text-sm font-extrabold text-[#fffdf5] hover:bg-[#103d34] disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-block rounded-full border-2 border-[#1a3c34] bg-gradient-to-br from-[#2a5a4e] to-[#1a3c34] px-10 py-[0.85rem] font-display text-[1.3rem] font-bold text-[#f9f5eb] shadow-[0_4px_12px_rgba(26,60,52,0.3)] transition-transform active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
           >
             Spin!
-          </Button>
-          <Button
-            variant="outline"
+          </button>
+          <button
             onClick={() => onStartTimer(effectiveTopic)}
-            className="h-11 cursor-pointer rounded-full border-[#174b40] bg-transparent px-5 text-sm font-extrabold text-[#174b40] hover:bg-[#eaf0e9]"
+            className="inline-block rounded-full border-2 border-[#1a3c34] bg-transparent px-10 py-[0.85rem] font-display text-[1.3rem] font-bold text-[#1a3c34] transition-colors hover:bg-[#1a3c34] hover:text-[#f9f5eb]"
           >
-            টাইমার →
-          </Button>
+            টাইমার
+          </button>
         </div>
-
-        <p className="mt-6 text-center font-[cursive] text-lg font-extrabold text-[#518174]">
-          {effectiveTopic ? (
-            <span>
-              {currentCategory.id !== 'random' && <span className="text-[#e6a446]">{currentCategory.label}: </span>}
-              {effectiveTopic.topic}
-            </span>
-          ) : (
-            <span>লিভার টানো বা Spin চাপো 👇</span>
-          )}
-        </p>
       </div>
-
-      <div className="hidden lg:block" />
-    </section>
+    </div>
   );
 }
