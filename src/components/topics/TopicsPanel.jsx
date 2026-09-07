@@ -64,9 +64,9 @@ export default function TopicsPanel({ onStartTimer }) {
   const currentCategory = CATEGORIES[categoryId];
 
   return (
-    <div className="mx-auto flex w-full max-w-[1400px] flex-col items-center gap-6 px-12 pb-8 pt-[calc(2rem+50px)] lg:min-h-screen lg:flex-row lg:items-center lg:justify-center lg:gap-12 lg:px-12">
+    <div className="mx-auto flex min-h-screen w-full max-w-[1400px] items-center justify-center gap-12 px-12 pt-[calc(2rem+50px)] pb-8 max-lg:min-h-fit max-lg:flex-col max-lg:gap-2 max-lg:px-8 max-lg:pt-2 max-lg:pb-8 max-[480px]:px-4 max-[480px]:pb-8">
       {/* ---- left panel ---- */}
-      <div className="flex w-[450px] max-w-full flex-col items-center text-center">
+      <div className="flex w-[450px] max-w-full shrink-0 flex-col items-center max-lg:w-auto max-lg:text-center max-[768px]:pt-5">
         <h1 className="font-display text-5xl font-black tracking-tight text-[#075345] sm:text-6xl">
           তোতাপাখি
         </h1>
@@ -75,22 +75,14 @@ export default function TopicsPanel({ onStartTimer }) {
           <br />
           ২) ১ মিনিট টাইমার সেট করো
           <br />
-          ৩) কথা বলো ↘
+          ৩) কথা বলো :)
         </p>
-        <a
-          href="https://offthecuffspeech.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-5 inline-block rounded-[8px] border-2 border-[#1a3c34] bg-gradient-to-br from-[#2a5a4e] to-[#1a3c34] px-12 py-[0.7rem] font-display text-lg font-bold text-[#f9f5eb] shadow-[0_4px_12px_rgba(26,60,52,0.3)] transition-all hover:scale-[1.03] hover:shadow-[0_6px_16px_rgba(26,60,52,0.45)] active:scale-[0.97]"
-        >
-          GET SPEECH ANALYSIS
-        </a>
       </div>
 
       {/* ---- right panel ---- */}
-      <div className="flex flex-1 flex-col items-center">
+      <div className="flex flex-1 flex-col items-center max-lg:w-full">
         {/* dropdowns */}
-        <div className="z-20 mb-2 flex flex-wrap items-center justify-center gap-2 translate-x-[-38px] translate-y-[20px]">
+        <div className="z-20 mb-2 flex translate-x-[-38px] translate-y-5 items-center gap-2 self-center">
           <DropdownMenu>
             <DropdownMenuTrigger className={triggerClass}>
               <Dice5 size={18} />
@@ -154,31 +146,37 @@ export default function TopicsPanel({ onStartTimer }) {
         </div>
 
         {/* reel assembly */}
-        <div className="reel-assembly flex w-full items-stretch gap-4">
-          <div className="topic-col flex flex-1 flex-col items-center">
-            <div ref={windowRef} className="tp-reel-window">
-              <div ref={stripRef} className="tp-reel-strip" />
-              <div className="tp-reel-center-line" />
+        <div className="flex w-full items-stretch gap-4 max-[480px]:-mx-4">
+          <div className="flex min-w-0 flex-1 flex-col items-center">
+            <div
+              ref={windowRef}
+              className="relative mt-[75px] h-[390px] w-full overflow-hidden shadow-[inset_0_20px_30px_-20px_rgba(0,0,0,0.06),inset_0_-20px_30px_-20px_rgba(0,0,0,0.06)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,black_20%,black_80%,transparent_100%)] [mask-image:linear-gradient(to_bottom,transparent_0%,black_20%,black_80%,transparent_100%)] max-lg:mt-0 max-lg:h-[300px] max-md:min-w-0 max-[768px]:h-[360px] max-[480px]:h-[300px]"
+            >
+              <div
+                ref={stripRef}
+                className="tp-reel-strip absolute left-0 top-0 w-full will-change-transform"
+              />
+              <div className="pointer-events-none absolute top-1/2 left-1/2 z-[2] h-[130px] w-[80%] -translate-x-1/2 -translate-y-1/2 border-y border-[rgba(26,60,52,0.08)] max-lg:h-[100px] max-[768px]:h-[120px]" />
             </div>
-            <div className="desktop-btn-row mt-8 hidden justify-center gap-3 sm:flex">
+            <div className="mt-[30px] flex justify-center gap-3 max-lg:hidden">
               <button
                 onClick={() => triggerSpin(30)}
                 disabled={isSpinning}
                 className="inline-block rounded-full border-2 border-[#1a3c34] bg-gradient-to-br from-[#2a5a4e] to-[#1a3c34] px-9 py-[0.6rem] font-display text-xl font-bold text-[#f9f5eb] shadow-[0_4px_12px_rgba(26,60,52,0.3)] transition-all hover:scale-[1.05] hover:shadow-[0_6px_16px_rgba(26,60,52,0.4)] active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
               >
-                Spin!
+                ঘোরান চাকা!
               </button>
               <button
                 onClick={() => onStartTimer(effectiveTopic)}
                 className="inline-block rounded-full border-2 border-[#1a3c34] bg-transparent px-9 py-[0.6rem] font-display text-xl font-bold text-[#1a3c34] transition-colors hover:bg-[#1a3c34] hover:text-[#f9f5eb]"
               >
-                Start Timer →
+                টাইমার →
               </button>
             </div>
           </div>
 
           <div
-            className="slot-handle relative hidden w-[60px] shrink-0 flex-col items-center lg:flex"
+            className="relative h-[390px] w-[60px] shrink-0 overflow-visible max-lg:hidden"
             aria-hidden="true"
           >
             <Lever onSpin={triggerSpin} disabled={isSpinning} />
@@ -186,19 +184,19 @@ export default function TopicsPanel({ onStartTimer }) {
         </div>
 
         {/* mobile buttons */}
-        <div className="mobile-btn-row mt-6 hidden justify-center gap-3 sm:hidden">
+        <div className="mt-5 hidden justify-center gap-3 max-lg:mt-12 max-lg:flex">
           <button
             onClick={() => triggerSpin(30)}
             disabled={isSpinning}
             className="inline-block rounded-full border-2 border-[#1a3c34] bg-gradient-to-br from-[#2a5a4e] to-[#1a3c34] px-10 py-[0.85rem] font-display text-[1.3rem] font-bold text-[#f9f5eb] shadow-[0_4px_12px_rgba(26,60,52,0.3)] transition-transform active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            Spin!
+            ঘোরান চাকা!
           </button>
           <button
             onClick={() => onStartTimer(effectiveTopic)}
             className="inline-block rounded-full border-2 border-[#1a3c34] bg-transparent px-10 py-[0.85rem] font-display text-[1.3rem] font-bold text-[#1a3c34] transition-colors hover:bg-[#1a3c34] hover:text-[#f9f5eb]"
           >
-            টাইমার
+            টাইমার →
           </button>
         </div>
 

@@ -20,14 +20,14 @@ export default function App() {
   }
 
   const tabs = [
-    { id: 'topics', label: 'Random Topics' },
-    { id: 'interview', label: 'Interview Prep' },
+    { id: 'topics', label: 'যা তা টপিক' },
+    { id: 'interview', label: 'ইন্টারভিউয়ে গলা ফাটানো' },
   ];
 
   return (
-    <main className="min-h-screen overflow-hidden bg-[#f9f5eb] text-[#1a3c34]">
+    <main className="min-h-screen overflow-x-hidden bg-[#f9f5eb] text-[#1a3c34]">
       {/* fixed tab bar, original style */}
-      <div className="fixed top-4 left-1/2 z-15 flex max-w-[calc(100vw-1.5rem)] -translate-x-1/2 gap-2 overflow-x-auto rounded-[50px] bg-[rgba(26,60,52,0.08)] p-[5px] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div className="fixed top-4 left-1/2 z-[15] flex max-w-[calc(100vw-1.5rem)] -translate-x-1/2 gap-2 overflow-x-auto rounded-[50px] bg-[rgba(26,60,52,0.08)] p-[5px] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden max-lg:static max-lg:top-auto max-lg:left-auto max-lg:z-auto max-lg:mx-auto max-lg:mt-4 max-lg:translate-x-0">
         {tabs.map((tab) => (
           <button
             key={tab.id}
@@ -53,22 +53,7 @@ export default function App() {
         <img
           src="/brand-badge.png"
           alt="Baby Steps to the Mic ©"
-          className="fixed right-1.5 top-4 z-10 hidden h-auto w-[330px] max-w-[26vw] opacity-80 md:block"
-        />
-      </a>
-
-      {/* copyright badge, mobile (inline at bottom, like the original) */}
-      <a
-        href="https://www.instagram.com/babystepstothemic/?hl=en"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Baby Steps to the Mic ©"
-        className="mx-auto mt-6 block w-[180px] opacity-80 md:hidden"
-      >
-        <img
-          src="/brand-badge.png"
-          alt="Baby Steps to the Mic ©"
-          className="w-full max-w-[180px] max-[480px]:max-w-[120px]"
+          className="fixed top-4 right-6 z-10 w-[330px] opacity-80 max-lg:hidden"
         />
       </a>
 
@@ -82,7 +67,7 @@ export default function App() {
             onClick={() => setMode('topics')}
             className="mb-4 cursor-pointer rounded-full border-2 border-[#1a3c34] bg-transparent px-6 py-2 font-display text-lg font-bold text-[#1a3c34] transition-colors hover:bg-[#1a3c34] hover:text-[#f9f5eb]"
           >
-            ← র‍্যান্ডম টপিক
+            ← যা তা টপিক
           </button>
           <TimerPanel
             key={timerKey + (timerTopic ?? '')}
@@ -91,6 +76,21 @@ export default function App() {
           />
         </div>
       )}
+
+      {/* copyright badge, mobile (inline at bottom, like the original) */}
+      <a
+        href="https://www.instagram.com/babystepstothemic/?hl=en"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Baby Steps to the Mic ©"
+        className="mx-auto mt-6 hidden w-[180px] opacity-80 max-lg:block max-[480px]:w-[120px]"
+      >
+        <img
+          src="/brand-badge.png"
+          alt="Baby Steps to the Mic ©"
+          className="w-full"
+        />
+      </a>
     </main>
   );
 }

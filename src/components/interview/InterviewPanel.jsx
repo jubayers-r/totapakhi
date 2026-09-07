@@ -5,12 +5,13 @@ export default function InterviewPanel() {
         Coming Soon
       </div>
       <h2 className="font-display text-[clamp(30px,4vw,48px)] font-bold leading-[1.1] text-[#075345]">
-        ইন্টারভিউ প্রস্তুতি
+        ইন্টারভিউয়ে গলা ফাটানোর প্রস্তুতি
       </h2>
       <p className="mt-6 max-w-xl text-base leading-relaxed text-[#41796e] sm:text-lg">
-        STAR, PREP, PPF ও MECE — কেস স্টাডি থেকে আচরণগত প্রশ্ন পর্যন্ত টপিক ইঞ্জিন ও টাইমার নিয়ে
-        পূর্ণাঙ্গ ইন্টারভিউ প্র্যাকটিস শীঘ্রই আসছে। আপাতত{' '}
-        <span className="font-bold text-[#075345]">Random Topics</span> ট্যাবে লিভার টেনে চর্চা করুন।
+        STAR, PREP, PPF ও MECE — কেস স্টাডি থেকে আচরণগত প্রশ্ন পর্যন্ত টপিক
+        ইঞ্জিন ও টাইমার নিয়ে পূর্ণাঙ্গ ইন্টারভিউ প্র্যাকটিস শীঘ্রই আসছে। আপাতত{' '}
+        <span className="font-bold text-[#075345]">যা তা টপিক</span> ট্যাবে
+        লিভার টেনে চর্চা করুন।
       </p>
     </div>
   );
