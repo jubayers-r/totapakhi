@@ -72,13 +72,11 @@ export default function TopicsPanel({ onStartTimer }) {
           alt="তোতাপাখি"
           className="h-auto w-full max-w-[700px] max-[480px]:max-w-[280px]"
         />
-        <p className="mt-8 font-[cursive] text-[clamp(16px,1.8vw,22px)] font-extrabold leading-relaxed text-[#41796e]">
-          ১) যা তা টপিক ধরেন
-          <br />
-          ২) ১ মিনিট টাইমার সেট করেন
-          <br />
-          ৩) রেকর্ডার চেপে লেগে পরেন তোতাপাখির মতো :)
-        </p>
+        <img
+          src="/header.png"
+          alt="তোতাপাখি হেডার"
+          className="mt-4 h-auto w-full max-w-[700px] max-md:max-w-[280px]"
+        />
       </div>
 
       {/* ---- right panel ---- */}
