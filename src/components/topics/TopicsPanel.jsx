@@ -1,32 +1,37 @@
-import { useCallback, useMemo } from 'react';
-import { Dice5, UserRound } from 'lucide-react';
+import { CATEGORIES } from '@/assets/categories';
+import topicsByCategory from '@/assets/topics.json';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { CATEGORIES } from '@/assets/categories';
-import topicsByCategory from '@/assets/topics.json';
-import { useReel } from '@/hooks/useReel';
 import { usePersistence } from '@/hooks/usePersistence';
+import { useReel } from '@/hooks/useReel';
+import { ensureAudioContext, playClunk } from '@/lib/sounds';
+import { Dice5, UserRound } from 'lucide-react';
+import { useCallback, useMemo } from 'react';
 import Lever from './Lever';
-import { playClunk, ensureAudioContext } from '@/lib/sounds';
 
-const CATEGORY_LIST = Object.values(CATEGORIES).filter((c) => c.id !== 'random');
+const CATEGORY_LIST = Object.values(CATEGORIES).filter(
+  (c) => c.id !== 'random'
+);
 
 const triggerClass =
   'inline-flex items-center gap-[6px] rounded-[20px] border-[1.5px] border-[rgba(26,60,52,0.25)] bg-transparent px-6 py-[0.6rem] font-sans text-[1.05rem] font-semibold text-[#1a3c34] cursor-pointer select-none transition-colors hover:border-[rgba(26,60,52,0.5)] hover:bg-[rgba(26,60,52,0.04)]';
 
 export default function TopicsPanel({ onStartTimer }) {
-  const [categoryId, setCategoryId] = usePersistence('impromptu-category', 'random');
+  const [categoryId, setCategoryId] = usePersistence(
+    'impromptu-category',
+    'random'
+  );
   const [gender, setGender] = usePersistence('impromptu-gender', 'all');
 
   const pool = useMemo(() => {
     const source =
       categoryId === 'random'
         ? Object.values(topicsByCategory).flat()
-        : topicsByCategory[categoryId] ?? [];
+        : (topicsByCategory[categoryId] ?? []);
     if (!source.length) return [];
     const allowedGenders =
       gender === 'all'
@@ -34,12 +39,16 @@ export default function TopicsPanel({ onStartTimer }) {
         : gender === 'male'
           ? ['neutral', 'male']
           : ['neutral', 'female'];
-    let eligible = source.filter((item) => allowedGenders.includes(item.gender));
+    let eligible = source.filter((item) =>
+      allowedGenders.includes(item.gender)
+    );
     if (!eligible.length) eligible = source;
     return eligible;
   }, [categoryId, gender]);
 
-  const { windowRef, stripRef, spin, isSpinning, lastLanded } = useReel({ topics: pool });
+  const { windowRef, stripRef, spin, isSpinning, lastLanded } = useReel({
+    topics: pool,
+  });
 
   const effectiveTopic = lastLanded;
 
@@ -49,7 +58,7 @@ export default function TopicsPanel({ onStartTimer }) {
       playClunk();
       spin(velocity);
     },
-    [spin],
+    [spin]
   );
 
   const currentCategory = CATEGORIES[categoryId];
@@ -65,7 +74,8 @@ export default function TopicsPanel({ onStartTimer }) {
           ১) টপিক নাও
           <br />
           ২) ১ মিনিট টাইমার সেট করো
-          <br />৩) কথা বলো ↘
+          <br />
+          ৩) কথা বলো ↘
         </p>
         <a
           href="https://offthecuffspeech.com"
@@ -87,7 +97,10 @@ export default function TopicsPanel({ onStartTimer }) {
               {currentCategory.label}
               <span className="ml-auto text-[0.6rem]">▼</span>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="w-[245px] rounded-xl border border-[#d9ddcf] bg-[#f9f5eb] p-1.5 shadow-xl">
+            <DropdownMenuContent
+              align="start"
+              className="w-[245px] rounded-xl border border-[#d9ddcf] bg-[#f9f5eb] p-1.5 shadow-xl"
+            >
               <DropdownMenuItem
                 className="rounded-lg p-2 text-left text-[15px] text-[#19483d] focus:bg-[#edf2e9]"
                 onClick={() => setCategoryId('random')}
@@ -101,7 +114,9 @@ export default function TopicsPanel({ onStartTimer }) {
                   onClick={() => setCategoryId(category.id)}
                 >
                   {category.label}
-                  <small className="mt-0.5 block text-[11px] text-[#75877f]">{category.subtitle}</small>
+                  <small className="mt-0.5 block text-[11px] text-[#75877f]">
+                    {category.subtitle}
+                  </small>
                 </DropdownMenuItem>
               ))}
             </DropdownMenuContent>
@@ -110,14 +125,21 @@ export default function TopicsPanel({ onStartTimer }) {
           <DropdownMenu>
             <DropdownMenuTrigger className={triggerClass}>
               <UserRound size={18} />
-              {gender === 'all' ? 'সবার জন্য' : gender === 'male' ? 'পুরুষ' : 'নারী'}
+              {gender === 'all'
+                ? 'উরাধুরা (সবাই)'
+                : gender === 'male'
+                  ? 'বেডা মানুষ'
+                  : 'বেডি মানুষ'}
               <span className="ml-auto text-[0.6rem]">▼</span>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-40 rounded-xl border border-[#d9ddcf] bg-[#f9f5eb] p-1.5 shadow-xl">
+            <DropdownMenuContent
+              align="end"
+              className="w-40 rounded-xl border border-[#d9ddcf] bg-[#f9f5eb] p-1.5 shadow-xl"
+            >
               {[
-                { value: 'all', label: 'সবার জন্য' },
-                { value: 'male', label: 'পুরুষ' },
-                { value: 'female', label: 'নারী' },
+                { value: 'all', label: 'উরাধুরা (সবাই)' },
+                { value: 'male', label: 'বেডা মানুষ' },
+                { value: 'female', label: 'বেডি মানুষ' },
               ].map((option) => (
                 <DropdownMenuItem
                   key={option.value}
@@ -155,7 +177,10 @@ export default function TopicsPanel({ onStartTimer }) {
             </div>
           </div>
 
-          <div className="slot-handle relative hidden w-[60px] shrink-0 flex-col items-center lg:flex" aria-hidden="true">
+          <div
+            className="slot-handle relative hidden w-[60px] shrink-0 flex-col items-center lg:flex"
+            aria-hidden="true"
+          >
             <Lever onSpin={triggerSpin} disabled={isSpinning} />
           </div>
         </div>
@@ -176,6 +201,30 @@ export default function TopicsPanel({ onStartTimer }) {
             টাইমার
           </button>
         </div>
+
+        {/* ideas grid: shown once a topic lands */}
+        {effectiveTopic?.hints?.length > 0 && (
+          <div className="w-full max-w-[620px] px-4 pt-2">
+            <p className="mb-2 text-center font-[cursive] text-2xl font-extrabold text-[#e6a446]">
+              ✦ কথা শুরু করার ভাবনা ✦
+            </p>
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+              {effectiveTopic.hints.map((hint, i) => (
+                <div
+                  key={i}
+                  className="flex items-start gap-2 rounded-xl border border-[rgba(26,60,52,0.12)] bg-[rgba(26,60,52,0.03)] p-3 text-left"
+                >
+                  <span className="font-display text-lg font-bold text-[#e6a446]">
+                    {i + 1}
+                  </span>
+                  <span className="text-sm leading-snug text-[#1a3c34]">
+                    {hint}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

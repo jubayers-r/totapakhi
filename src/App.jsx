@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import TopicsPanel from '@/components/topics/TopicsPanel';
 import InterviewPanel from '@/components/interview/InterviewPanel';
 import TimerPanel from '@/components/timer/TimerPanel';
+import TopicsPanel from '@/components/topics/TopicsPanel';
 import { usePersistence } from '@/hooks/usePersistence';
+import { useState } from 'react';
 
 export default function App() {
   const [mode, setMode] = usePersistence('impromptu-mode', 'topics');
@@ -43,13 +43,39 @@ export default function App() {
         ))}
       </div>
 
-      {/* brand badge, original top-right */}
-      <span className="fixed top-4 right-1.5 z-10 rotate-[-3deg] font-[cursive] text-lg font-extrabold text-[#3f776c] sm:text-xl">
-        say step to the mic
-      </span>
+      {/* copyright badge, same as original top-right */}
+      <a
+        href="https://www.instagram.com/babystepstothemic/?hl=en"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Baby Steps to the Mic ©"
+      >
+        <img
+          src="/brand-badge.png"
+          alt="Baby Steps to the Mic ©"
+          className="fixed right-1.5 top-4 z-10 hidden h-auto w-[330px] max-w-[26vw] opacity-80 md:block"
+        />
+      </a>
+
+      {/* copyright badge, mobile (inline at bottom, like the original) */}
+      <a
+        href="https://www.instagram.com/babystepstothemic/?hl=en"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Baby Steps to the Mic ©"
+        className="mx-auto mt-6 block w-[180px] opacity-80 md:hidden"
+      >
+        <img
+          src="/brand-badge.png"
+          alt="Baby Steps to the Mic ©"
+          className="w-full max-w-[180px] max-[480px]:max-w-[120px]"
+        />
+      </a>
 
       {mode === 'topics' && <TopicsPanel onStartTimer={startTimer} />}
-      {mode === 'interview' && <InterviewPanel onBack={() => setMode('topics')} />}
+      {mode === 'interview' && (
+        <InterviewPanel onBack={() => setMode('topics')} />
+      )}
       {mode === 'timer' && (
         <div className="flex min-h-screen flex-col items-center justify-center px-4 pt-16">
           <button
@@ -58,7 +84,11 @@ export default function App() {
           >
             ← র‍্যান্ডম টপিক
           </button>
-          <TimerPanel key={timerKey + (timerTopic ?? '')} topic={timerTopic} initialDuration={60} />
+          <TimerPanel
+            key={timerKey + (timerTopic ?? '')}
+            topic={timerTopic}
+            initialDuration={60}
+          />
         </div>
       )}
     </main>

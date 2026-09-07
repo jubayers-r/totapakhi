@@ -258,7 +258,7 @@
 
 .tp-handle-pivot {
   position: absolute;
-  bottom: 108px;
+  bottom: 173px;
   left: 50%;
   transform: translateX(-50%);
   width: 24px;
@@ -283,8 +283,9 @@
 
 .tp-handle-arm {
   position: absolute;
-  bottom: 120px;
+  bottom: 185px;
   left: 50%;
+  margin-left: -3px;
   width: 6px;
   height: 80px;
   transform-origin: center bottom;
@@ -300,21 +301,23 @@
   cursor: grabbing;
 }
 
-.tp-handle-arm.spring-back {
-  transition: transform 0.55s cubic-bezier(0.2, 0.8, 0.3, 1.4);
-}
-
-.tp-handle-arm.disabled {
+.tp-handle-arm.disabled .tp-handle-knob {
+  opacity: 0.5;
+  cursor: not-allowed;
   pointer-events: none;
 }
 
-.tp-handle-arm.hint .tp-handle-knob {
-  animation: tpKnobPull 1.1s ease-in-out infinite;
+.tp-handle-arm.spring-back {
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-@keyframes tpKnobPull {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(14px); }
+@keyframes leverHint {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(25deg); }
+}
+
+.tp-handle-arm.hint {
+  animation: leverHint 0.6s ease-in-out 3;
 }
 
 .tp-handle-shaft {
@@ -337,7 +340,15 @@
   cursor: grab;
   touch-action: none;
   box-shadow: 0 2px 6px rgba(26, 60, 52, 0.2);
+  transition: box-shadow 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 2;
+}
+
+.tp-handle-knob:hover {
+  box-shadow: 0 4px 12px rgba(26, 60, 52, 0.3);
 }
 
 .tp-handle-knob-grip {
@@ -351,29 +362,23 @@
     rgba(26, 60, 52, 0.15) 3px,
     rgba(26, 60, 52, 0.15) 5px
   );
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 }
 
 .tp-pull-hint {
   position: absolute;
-  bottom: 230px;
+  bottom: 305px;
   left: 50%;
   transform: translateX(-50%);
   width: 140px;
-  text-align: center;
+  height: auto;
   opacity: 0.55;
   pointer-events: none;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.4s ease;
   z-index: 1;
 }
 
-.tp-pull-hint.hidden,
-.tp-pull-hint.tp-hidden {
+.tp-pull-hint.tp-hint-hidden {
   opacity: 0;
-  transition: opacity 0.3s ease;
 }
 
 @media (max-width: 1024px) {

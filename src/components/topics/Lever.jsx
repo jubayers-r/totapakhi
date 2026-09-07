@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { playClunk, ensureAudioContext } from '@/lib/sounds';
 
 const MAX_ANGLE = 180;
@@ -10,8 +10,8 @@ export default function Lever({ onSpin, disabled }) {
   const hintRef = useRef(null);
 
   const dragRef = useRef({ isDragging: false, startY: 0, currentAngle: 0, hasMoved: false });
-  const [hintShown, setHintShown] = useState(true);
 
+  // Play the lever wobble hint animation once on mount, exactly like the original.
   useEffect(() => {
     const arm = armRef.current;
     if (!arm) return;
@@ -43,12 +43,11 @@ export default function Lever({ onSpin, disabled }) {
       arm.classList.add('grabbing');
       arm.classList.remove('hint', 'spring-back');
       arm.style.transition = '';
-      if (hintRef.current) hintRef.current.classList.add('hidden');
-      setHintShown(false);
+      if (hintRef.current) hintRef.current.classList.add('tp-hint-hidden');
 
       ensureAudioContext();
     },
-    [disabled]
+    [disabled],
   );
 
   const handlePointerMove = useCallback((e) => {
@@ -79,6 +78,7 @@ export default function Lever({ onSpin, disabled }) {
 
     const normalizedPull = drag.currentAngle / MAX_ANGLE;
 
+    // Spring arm back
     knob.style.boxShadow = '';
     arm.classList.add('spring-back');
     arm.style.transform = 'rotate(0deg)';
@@ -86,11 +86,13 @@ export default function Lever({ onSpin, disabled }) {
       arm.classList.remove('spring-back');
     }, 600);
 
+    // Any drag movement or even a click triggers a spin
     if (drag.hasMoved || drag.currentAngle > 0) {
       playClunk();
       const mappedVelocity = 20 + Math.min(normalizedPull, 1) * 35;
       onSpin?.(mappedVelocity);
     } else {
+      // Pure click with no movement - still trigger
       playClunk();
       onSpin?.(25);
     }
@@ -110,12 +112,13 @@ export default function Lever({ onSpin, disabled }) {
 
   return (
     <>
-      <div
+      <img
         ref={hintRef}
-        className={`tp-pull-hint -rotate-12 font-[cursive] text-xl font-extrabold text-[#518174] ${hintShown ? '' : 'tp-hidden'}`}
-      >
-        pull lever
-      </div>
+        src="/pull-lever.png"
+        alt="Pull lever"
+        className="tp-pull-hint"
+        draggable={false}
+      />
       <div
         ref={armRef}
         className={`tp-handle-arm ${disabled ? 'disabled' : ''}`}
