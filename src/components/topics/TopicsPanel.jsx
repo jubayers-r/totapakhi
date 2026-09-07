@@ -66,10 +66,12 @@ export default function TopicsPanel({ onStartTimer }) {
   return (
     <div className="mx-auto flex min-h-screen w-full max-w-[1400px] items-center justify-center gap-12 px-12 pt-[calc(2rem+50px)] pb-8 max-md:min-h-fit max-md:flex-col max-md:gap-2 max-md:px-8 max-md:pt-2 max-md:pb-8 portrait:min-[769px]:max-[1024px]:min-h-fit portrait:min-[769px]:max-[1024px]:flex-col portrait:min-[769px]:max-[1024px]:gap-6 portrait:min-[769px]:max-[1024px]:px-8 portrait:min-[769px]:max-[1024px]:pt-2 portrait:min-[769px]:max-[1024px]:pb-8 max-[480px]:px-4 max-[480px]:pb-8">
       {/* ---- left panel ---- */}
-      <div className="flex w-[450px] max-w-full shrink-0 flex-col items-center max-md:w-auto max-md:text-center max-md:pt-5 portrait:min-[769px]:max-[1024px]:w-auto portrait:min-[769px]:max-[1024px]:text-center">
-        <h1 className="font-display text-5xl font-black tracking-tight text-[#075345] sm:text-6xl">
-          তোতাপাখি
-        </h1>
+      <div className="flex w-auto max-w-full shrink-0 flex-col items-center max-md:w-auto max-md:text-center max-md:pt-5 portrait:min-[769px]:max-[1024px]:w-auto portrait:min-[769px]:max-[1024px]:text-center">
+        <img
+          src="/totapakhi-logo.png"
+          alt="তোতাপাখি"
+          className="h-auto w-full max-w-[700px] max-[480px]:max-w-[280px]"
+        />
         <p className="mt-8 font-[cursive] text-[clamp(16px,1.8vw,22px)] font-extrabold leading-relaxed text-[#41796e]">
           ১) যা তা টপিক ধরেন
           <br />
@@ -176,7 +178,7 @@ export default function TopicsPanel({ onStartTimer }) {
           </div>
 
           <div
-            className="relative h-[390px] w-[60px] shrink-0 overflow-visible max-md:hidden portrait:min-[769px]:max-[1024px]:hidden"
+            className="relative w-[60px] shrink-0 overflow-visible max-md:hidden portrait:min-[769px]:max-[1024px]:hidden"
             aria-hidden="true"
           >
             <Lever onSpin={triggerSpin} disabled={isSpinning} />

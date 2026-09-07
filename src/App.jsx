@@ -45,15 +45,15 @@ export default function App() {
 
       {/* copyright badge, same as original top-right */}
       <a
-        href="https://www.instagram.com/babystepstothemic/?hl=en"
+        href="https://linktr.ee/aatagache.totapakhi"
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Baby Steps to the Mic ©"
+        aria-label="আতা গাছে তোতা পাখি ©"
       >
         <img
           src="/brand-badge.png"
-          alt="Baby Steps to the Mic ©"
-          className="fixed top-4 right-6 z-10 w-[330px] opacity-80 max-md:hidden portrait:min-[769px]:max-[1024px]:hidden"
+          alt="আতা গাছে তোতা পাখি ©"
+          className="fixed top-4 right-6 z-10 w-[330px] opacity-80 max-[1080px]:hidden"
         />
       </a>
 
@@ -79,15 +79,15 @@ export default function App() {
 
       {/* copyright badge, mobile (inline at bottom, like the original) */}
       <a
-        href="https://www.instagram.com/babystepstothemic/?hl=en"
+        href="https://linktr.ee/aatagache.totapakhi"
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Baby Steps to the Mic ©"
-        className="mx-auto mt-6 hidden w-[180px] opacity-80 max-md:block portrait:min-[769px]:max-[1024px]:block max-[480px]:w-[120px]"
+        aria-label="আতা গাছে তোতা পাখি ©"
+        className="mx-auto mt-6 hidden w-[180px] opacity-80 max-[1080px]:block max-[480px]:w-[120px]"
       >
         <img
           src="/brand-badge.png"
-          alt="Baby Steps to the Mic ©"
+          alt="আতা গাছে তোতা পাখি ©"
           className="w-full"
         />
       </a>
