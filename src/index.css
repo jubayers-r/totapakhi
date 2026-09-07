@@ -11,6 +11,7 @@
 @import '@fontsource/baloo-da-2/700.css';
 
 @custom-variant dark (&:is(.dark *));
+@custom-variant portrait (@media (orientation: portrait));
 
 @theme inline {
   --font-heading: var(--font-display);
@@ -305,16 +306,18 @@
 }
 
 /* ===================== Original responsive parity ===================== */
-/* Only the imperative reel-state + global body zoom rules remain here;
-   all layout handled by Tailwind utilities in the JSX. */
+/* Only the imperative reel-state + body overflow rules remain here;
+   all layout handled by Tailwind utilities in the JSX.
+   NOTE: `body { zoom: ... }` was intentionally removed — base-ui floating
+   dropdowns are JS-measured and get displaced (rendering on top of their
+   trigger) inside a zoomed containing context on small screens. */
 
-/* Tablet portrait (<=1024) & phone (<=768): scaled, scrolling body */
+/* Tablet portrait (<=1024) & phone (<=768): scrolling body */
 @media (max-width: 1024px) and (orientation: portrait),
   (max-width: 768px) {
   body {
     overflow-y: auto;
     justify-content: flex-start;
-    zoom: 0.9;
   }
   .tp-reel-strip.settled .tp-reel-item.landed {
     transform: scale(1.5);

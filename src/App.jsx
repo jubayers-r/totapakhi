@@ -27,7 +27,7 @@ export default function App() {
   return (
     <main className="min-h-screen overflow-x-hidden bg-[#f9f5eb] text-[#1a3c34]">
       {/* fixed tab bar, original style */}
-      <div className="fixed top-4 left-1/2 z-[15] flex max-w-[calc(100vw-1.5rem)] -translate-x-1/2 gap-2 overflow-x-auto rounded-[50px] bg-[rgba(26,60,52,0.08)] p-[5px] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden max-lg:static max-lg:top-auto max-lg:left-auto max-lg:z-auto max-lg:mx-auto max-lg:mt-4 max-lg:w-full max-lg:max-w-[calc(100vw-2rem)] max-lg:translate-x-0 max-md:gap-1.5 max-md:px-1 max-[480px]:gap-1 max-[480px]:px-0.5">
+      <div className="fixed top-4 left-1/2 z-[15] flex max-w-[calc(100vw-1.5rem)] -translate-x-1/2 gap-2 overflow-x-auto rounded-[50px] bg-[rgba(26,60,52,0.08)] p-[5px] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden max-md:static max-md:top-auto max-md:left-auto max-md:z-auto max-md:mx-auto max-md:mt-4 max-md:w-full max-md:max-w-[calc(100vw-2rem)] max-md:translate-x-0 portrait:min-[769px]:max-[1024px]:static portrait:min-[769px]:max-[1024px]:top-auto portrait:min-[769px]:max-[1024px]:left-auto portrait:min-[769px]:max-[1024px]:z-auto portrait:min-[769px]:max-[1024px]:mx-auto portrait:min-[769px]:max-[1024px]:mt-4 portrait:min-[769px]:max-[1024px]:w-full portrait:min-[769px]:max-[1024px]:max-w-[calc(100vw-2rem)] portrait:min-[769px]:max-[1024px]:translate-x-0 max-md:gap-1.5 max-md:px-1 max-[480px]:gap-1 max-[480px]:px-0.5">
         {tabs.map((tab) => (
           <button
             key={tab.id}
@@ -36,7 +36,7 @@ export default function App() {
               mode === tab.id
                 ? 'bg-[#f9f5eb] text-[#1a3c34] shadow-[0_2px_6px_rgba(26,60,52,0.14)]'
                 : 'bg-transparent text-[#1a3c34] hover:bg-[rgba(26,60,52,0.06)]'
-            } text-center max-lg:flex-1 max-lg:px-1 max-md:py-2 max-md:text-[0.92rem] max-[480px]:py-[0.45rem] max-[480px]:text-[0.78rem]`}
+            } text-center max-md:flex-1 max-md:px-1 portrait:min-[769px]:max-[1024px]:flex-1 portrait:min-[769px]:max-[1024px]:px-1 max-md:py-2 max-md:text-[0.92rem] max-[480px]:py-[0.45rem] max-[480px]:text-[0.78rem]`}
           >
             {tab.label}
           </button>
@@ -53,7 +53,7 @@ export default function App() {
         <img
           src="/brand-badge.png"
           alt="Baby Steps to the Mic ©"
-          className="fixed top-4 right-6 z-10 w-[330px] opacity-80 max-lg:hidden"
+          className="fixed top-4 right-6 z-10 w-[330px] opacity-80 max-md:hidden portrait:min-[769px]:max-[1024px]:hidden"
         />
       </a>
 
@@ -83,7 +83,7 @@ export default function App() {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Baby Steps to the Mic ©"
-        className="mx-auto mt-6 hidden w-[180px] opacity-80 max-lg:block max-[480px]:w-[120px]"
+        className="mx-auto mt-6 hidden w-[180px] opacity-80 max-md:block portrait:min-[769px]:max-[1024px]:block max-[480px]:w-[120px]"
       >
         <img
           src="/brand-badge.png"

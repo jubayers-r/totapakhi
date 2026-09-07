@@ -18,7 +18,7 @@ const CATEGORY_LIST = Object.values(CATEGORIES).filter(
 );
 
 const triggerClass =
-  'inline-flex items-center gap-[6px] rounded-[20px] border-[1.5px] border-[rgba(26,60,52,0.25)] bg-transparent px-6 py-[0.6rem] font-sans text-[1.05rem] font-semibold text-[#1a3c34] cursor-pointer select-none transition-colors hover:border-[rgba(26,60,52,0.5)] hover:bg-[rgba(26,60,52,0.04)]';
+  'inline-flex items-center gap-[6px] rounded-[20px] border-[1.5px] border-[rgba(26,60,52,0.25)] bg-transparent px-6 py-[0.6rem] font-sans text-[1.05rem] font-semibold text-[#1a3c34] cursor-pointer select-none transition-colors hover:border-[rgba(26,60,52,0.5)] hover:bg-[rgba(26,60,52,0.04)] max-md:gap-1 max-md:px-3.5 max-md:py-[0.45rem] max-md:text-[0.95rem] max-[480px]:gap-[3px] max-[480px]:px-[0.55rem] max-[480px]:py-[0.35rem] max-[480px]:text-[0.8rem]';
 
 export default function TopicsPanel({ onStartTimer }) {
   const [categoryId, setCategoryId] = usePersistence(
@@ -64,25 +64,25 @@ export default function TopicsPanel({ onStartTimer }) {
   const currentCategory = CATEGORIES[categoryId];
 
   return (
-    <div className="mx-auto flex min-h-screen w-full max-w-[1400px] items-center justify-center gap-12 px-12 pt-[calc(2rem+50px)] pb-8 max-lg:min-h-fit max-lg:flex-col max-lg:gap-2 max-lg:px-8 max-lg:pt-2 max-lg:pb-8 max-[480px]:px-4 max-[480px]:pb-8">
+    <div className="mx-auto flex min-h-screen w-full max-w-[1400px] items-center justify-center gap-12 px-12 pt-[calc(2rem+50px)] pb-8 max-md:min-h-fit max-md:flex-col max-md:gap-2 max-md:px-8 max-md:pt-2 max-md:pb-8 portrait:min-[769px]:max-[1024px]:min-h-fit portrait:min-[769px]:max-[1024px]:flex-col portrait:min-[769px]:max-[1024px]:gap-6 portrait:min-[769px]:max-[1024px]:px-8 portrait:min-[769px]:max-[1024px]:pt-2 portrait:min-[769px]:max-[1024px]:pb-8 max-[480px]:px-4 max-[480px]:pb-8">
       {/* ---- left panel ---- */}
-      <div className="flex w-[450px] max-w-full shrink-0 flex-col items-center max-lg:w-auto max-lg:text-center max-[768px]:pt-5">
+      <div className="flex w-[450px] max-w-full shrink-0 flex-col items-center max-md:w-auto max-md:text-center max-md:pt-5 portrait:min-[769px]:max-[1024px]:w-auto portrait:min-[769px]:max-[1024px]:text-center">
         <h1 className="font-display text-5xl font-black tracking-tight text-[#075345] sm:text-6xl">
           তোতাপাখি
         </h1>
         <p className="mt-8 font-[cursive] text-[clamp(16px,1.8vw,22px)] font-extrabold leading-relaxed text-[#41796e]">
-          ১) টপিক নাও
+          ১) যা তা টপিক ধরেন
           <br />
-          ২) ১ মিনিট টাইমার সেট করো
+          ২) ১ মিনিট টাইমার সেট করেন
           <br />
-          ৩) কথা বলো :)
+          ৩) রেকর্ডার চেপে লেগে পরেন তোতাপাখির মতো :)
         </p>
       </div>
 
       {/* ---- right panel ---- */}
-      <div className="flex flex-1 flex-col items-center max-lg:w-full">
+      <div className="flex flex-1 flex-col items-center max-md:w-full portrait:min-[769px]:max-[1024px]:w-full">
         {/* dropdowns */}
-        <div className="z-20 mb-2 flex translate-x-[-38px] translate-y-5 items-center gap-2 self-center">
+        <div className="z-20 mb-2 flex translate-x-[-38px] translate-y-5 items-center gap-2 self-center max-md:mt-5 max-md:translate-x-0 max-md:translate-y-0 max-md:gap-1.5 portrait:min-[769px]:max-[1024px]:mt-5 portrait:min-[769px]:max-[1024px]:translate-x-0 portrait:min-[769px]:max-[1024px]:translate-y-0 max-[480px]:gap-1">
           <DropdownMenu>
             <DropdownMenuTrigger className={triggerClass}>
               <Dice5 size={18} />
@@ -90,7 +90,7 @@ export default function TopicsPanel({ onStartTimer }) {
               <span className="ml-auto text-[0.6rem]">▼</span>
             </DropdownMenuTrigger>
             <DropdownMenuContent
-              align="start"
+              align="center"
               className="w-[245px] rounded-xl border border-[#d9ddcf] bg-[#f9f5eb] p-1.5 shadow-xl"
             >
               <DropdownMenuItem
@@ -125,7 +125,7 @@ export default function TopicsPanel({ onStartTimer }) {
               <span className="ml-auto text-[0.6rem]">▼</span>
             </DropdownMenuTrigger>
             <DropdownMenuContent
-              align="end"
+              align="center"
               className="w-40 rounded-xl border border-[#d9ddcf] bg-[#f9f5eb] p-1.5 shadow-xl"
             >
               {[
@@ -150,15 +150,15 @@ export default function TopicsPanel({ onStartTimer }) {
           <div className="flex min-w-0 flex-1 flex-col items-center">
             <div
               ref={windowRef}
-              className="relative mt-[75px] h-[390px] w-full overflow-hidden shadow-[inset_0_20px_30px_-20px_rgba(0,0,0,0.06),inset_0_-20px_30px_-20px_rgba(0,0,0,0.06)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,black_20%,black_80%,transparent_100%)] [mask-image:linear-gradient(to_bottom,transparent_0%,black_20%,black_80%,transparent_100%)] max-lg:mt-0 max-lg:h-[300px] max-md:min-w-0 max-[768px]:h-[360px] max-[480px]:h-[300px]"
+              className="relative mt-[75px] h-[390px] w-full overflow-hidden shadow-[inset_0_20px_30px_-20px_rgba(0,0,0,0.06),inset_0_-20px_30px_-20px_rgba(0,0,0,0.06)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,black_20%,black_80%,transparent_100%)] [mask-image:linear-gradient(to_bottom,transparent_0%,black_20%,black_80%,transparent_100%)] max-md:mt-0 max-md:h-[360px] max-md:min-w-0 portrait:min-[769px]:max-[1024px]:mt-0 portrait:min-[769px]:max-[1024px]:h-[300px] portrait:min-[769px]:max-[1024px]:min-w-0 max-[480px]:h-[300px]"
             >
               <div
                 ref={stripRef}
                 className="tp-reel-strip absolute left-0 top-0 w-full will-change-transform"
               />
-              <div className="pointer-events-none absolute top-1/2 left-1/2 z-[2] h-[130px] w-[80%] -translate-x-1/2 -translate-y-1/2 border-y border-[rgba(26,60,52,0.08)] max-lg:h-[100px] max-[768px]:h-[120px]" />
+              <div className="pointer-events-none absolute top-1/2 left-1/2 z-[2] h-[130px] w-[80%] -translate-x-1/2 -translate-y-1/2 border-y border-[rgba(26,60,52,0.08)] max-md:h-[120px] portrait:min-[769px]:max-[1024px]:h-[100px] max-[480px]:h-[100px]" />
             </div>
-            <div className="mt-[30px] flex justify-center gap-3 max-lg:hidden">
+            <div className="mt-[30px] flex justify-center gap-3 max-md:hidden portrait:min-[769px]:max-[1024px]:hidden">
               <button
                 onClick={() => triggerSpin(30)}
                 disabled={isSpinning}
@@ -167,7 +167,7 @@ export default function TopicsPanel({ onStartTimer }) {
                 ঘোরান চাকা!
               </button>
               <button
-                onClick={() => onStartTimer(effectiveTopic)}
+                onClick={() => onStartTimer(effectiveTopic?.topic ?? null)}
                 className="inline-block rounded-full border-2 border-[#1a3c34] bg-transparent px-9 py-[0.6rem] font-display text-xl font-bold text-[#1a3c34] transition-colors hover:bg-[#1a3c34] hover:text-[#f9f5eb]"
               >
                 টাইমার →
@@ -176,7 +176,7 @@ export default function TopicsPanel({ onStartTimer }) {
           </div>
 
           <div
-            className="relative h-[390px] w-[60px] shrink-0 overflow-visible max-lg:hidden"
+            className="relative h-[390px] w-[60px] shrink-0 overflow-visible max-md:hidden portrait:min-[769px]:max-[1024px]:hidden"
             aria-hidden="true"
           >
             <Lever onSpin={triggerSpin} disabled={isSpinning} />
@@ -184,17 +184,17 @@ export default function TopicsPanel({ onStartTimer }) {
         </div>
 
         {/* mobile buttons */}
-        <div className="mt-5 hidden justify-center gap-3 max-lg:mt-12 max-lg:flex">
+        <div className="mt-5 hidden justify-center gap-3 max-md:mt-12 max-md:flex portrait:min-[769px]:max-[1024px]:mt-12 portrait:min-[769px]:max-[1024px]:flex">
           <button
             onClick={() => triggerSpin(30)}
             disabled={isSpinning}
-            className="inline-block rounded-full border-2 border-[#1a3c34] bg-gradient-to-br from-[#2a5a4e] to-[#1a3c34] px-10 py-[0.85rem] font-display text-[1.3rem] font-bold text-[#f9f5eb] shadow-[0_4px_12px_rgba(26,60,52,0.3)] transition-transform active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
+            className="inline-block rounded-full border-2 border-[#1a3c34] bg-gradient-to-br from-[#2a5a4e] to-[#1a3c34] px-9 py-[0.75rem] font-display text-[1.15rem] font-bold text-[#f9f5eb] shadow-[0_4px_12px_rgba(26,60,52,0.3)] transition-transform active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
           >
             ঘোরান চাকা!
           </button>
           <button
-            onClick={() => onStartTimer(effectiveTopic)}
-            className="inline-block rounded-full border-2 border-[#1a3c34] bg-transparent px-10 py-[0.85rem] font-display text-[1.3rem] font-bold text-[#1a3c34] transition-colors hover:bg-[#1a3c34] hover:text-[#f9f5eb]"
+            onClick={() => onStartTimer(effectiveTopic?.topic ?? null)}
+            className="inline-block rounded-full border-2 border-[#1a3c34] bg-transparent px-9 py-[0.75rem] font-display text-[1.15rem] font-bold text-[#1a3c34] transition-colors hover:bg-[#1a3c34] hover:text-[#f9f5eb]"
           >
             টাইমার →
           </button>
