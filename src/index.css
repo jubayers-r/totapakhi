@@ -148,7 +148,7 @@
   text-align: center;
   font-family: 'Baloo Da 2', 'DM Serif Display', 'Noto Sans Bengali', serif;
   font-size: 5rem;
-  line-height: 1.15;
+  line-height: 1.4;
   color: #1a3c34;
   padding: 0 1rem;
   user-select: none;
@@ -167,6 +167,7 @@
 .tp-reel-strip.settled .tp-reel-item.landed {
   opacity: 1;
   transform: scale(1.6);
+  font-weight: 700;
   transition:
     transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
     opacity 0.4s ease;

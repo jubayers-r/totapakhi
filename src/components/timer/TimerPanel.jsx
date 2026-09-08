@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
-import { Pause, Play, RotateCcw } from 'lucide-react';
 import { playAlarm, playClick, playStartChime } from '@/lib/sounds';
+import { Pause, Play, RotateCcw } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 
 const CIRCUMFERENCE = 2 * Math.PI * 115;
 
@@ -15,7 +15,8 @@ export default function TimerPanel({ topic, initialDuration = 60 }) {
   const ringRef = useRef(null);
 
   useEffect(() => {
-    if (minuteRef.current) minuteRef.current.textContent = String(Math.floor(remaining / 60));
+    if (minuteRef.current)
+      minuteRef.current.textContent = String(Math.floor(remaining / 60));
     if (secondRef.current) {
       const secs = remaining % 60;
       secondRef.current.textContent = secs < 10 ? '0' + secs : String(secs);
@@ -45,8 +46,14 @@ export default function TimerPanel({ topic, initialDuration = 60 }) {
   }, [running]);
 
   function parseTimeFromDisplay() {
-    const mins = Math.max(0, Math.min(99, parseInt(minuteRef.current?.textContent, 10) || 0));
-    const secs = Math.max(0, Math.min(59, parseInt(secondRef.current?.textContent, 10) || 0));
+    const mins = Math.max(
+      0,
+      Math.min(99, parseInt(minuteRef.current?.textContent, 10) || 0)
+    );
+    const secs = Math.max(
+      0,
+      Math.min(59, parseInt(secondRef.current?.textContent, 10) || 0)
+    );
     return mins * 60 + secs;
   }
 
@@ -56,7 +63,18 @@ export default function TimerPanel({ topic, initialDuration = 60 }) {
       e.target.blur();
       return;
     }
-    if (['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End'].includes(e.key)) return;
+    if (
+      [
+        'Backspace',
+        'Delete',
+        'ArrowLeft',
+        'ArrowRight',
+        'Tab',
+        'Home',
+        'End',
+      ].includes(e.key)
+    )
+      return;
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'a') return;
     if (!/^\d$/.test(e.key)) e.preventDefault();
   }
@@ -120,13 +138,19 @@ export default function TimerPanel({ topic, initialDuration = 60 }) {
       <div className="flex min-h-[44px] items-center justify-center">
         {topic && (
           <div className="text-center">
-            <div className="mb-1 text-xs font-bold uppercase tracking-widest text-[#81928a]">বিষয়</div>
-            <div className="font-display text-xl font-bold text-[#1a3c34]">{topic}</div>
+            <div className="mb-1 text-xs font-bold uppercase tracking-widest text-[#81928a]">
+              যা নিয়ে কথা বলবেন
+            </div>
+            <div className="font-display text-xl font-bold text-[#1a3c34]">
+              {topic}
+            </div>
           </div>
         )}
       </div>
 
-      <div className={`relative h-[425px] w-[425px] max-w-[88vw] transition-all sm:h-[500px] sm:w-[500px] ${running ? '' : ''}`}>
+      <div
+        className={`relative h-[425px] w-[425px] max-w-[88vw] transition-all sm:h-[500px] sm:w-[500px] ${running ? '' : ''}`}
+      >
         <svg className="h-full w-full -rotate-90" viewBox="0 0 260 260">
           <circle className="tp-ring-track" cx="130" cy="130" r="115" />
           <circle
@@ -236,7 +260,9 @@ export default function TimerPanel({ topic, initialDuration = 60 }) {
       <p className="text-center text-xs font-semibold text-[#81928a]">
         {running && '⏱ চলছে…'}
         {finished && '🕐 সময় শেষ! আবার শুনুন — আবার চেষ্টা করুন।'}
-        {!running && !finished && 'সময় বাড়াতে ঘড়ির সংখ্যা ক্লিক করে বদলান, অথবা ±0:30 ব্যবহার করুন।'}
+        {!running &&
+          !finished &&
+          'সময় বাড়াতে ঘড়ির সংখ্যা ক্লিক করে বদলান, অথবা ±0:30 ব্যবহার করুন।'}
       </p>
     </div>
   );

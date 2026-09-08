@@ -71,9 +71,10 @@ function fitTextToWidth(items, containerWidth) {
 
       const sizeMultiplier = wordCount > 8 ? 0.38 : 0.55;
       item.style.fontSize = maxFontSize * sizeMultiplier + 'rem';
-      item.style.lineHeight = '1.15';
+      item.style.lineHeight = '1.4';
     } else {
       item.style.fontSize = maxFontSize + 'rem';
+      item.style.lineHeight = '1.4';
     }
 
     if (item.scrollWidth > containerWidth) {
