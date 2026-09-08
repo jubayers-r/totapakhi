@@ -10,7 +10,7 @@ import { usePersistence } from '@/hooks/usePersistence';
 import { useReel } from '@/hooks/useReel';
 import { ensureAudioContext, playClunk } from '@/lib/sounds';
 import { Dice5, UserRound } from 'lucide-react';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import Lever from './Lever';
 
 const CATEGORY_LIST = Object.values(CATEGORIES).filter(
@@ -60,6 +60,33 @@ export default function TopicsPanel({ onStartTimer }) {
     },
     [spin]
   );
+
+  useEffect(() => {
+    const onKeyDown = (e) => {
+      if (e.code !== 'Space' && e.code !== 'Enter') return;
+
+      const menuOpen = document.querySelector('[role="menu"]');
+      const el = e.target;
+      const interactive =
+        el &&
+        typeof el.closest === 'function' &&
+        el.closest(
+          'button, a, input, [role="menu"], [role="menuitem"], [role="listbox"], [role="combobox"]'
+        );
+      if (menuOpen || interactive) return;
+
+      if (e.code === 'Space') {
+        e.preventDefault();
+        if (!isSpinning) triggerSpin(30);
+      } else if (!isSpinning && effectiveTopic?.topic) {
+        e.preventDefault();
+        onStartTimer(effectiveTopic.topic);
+      }
+    };
+
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [isSpinning, triggerSpin, effectiveTopic, onStartTimer]);
 
   const currentCategory = CATEGORIES[categoryId];
 

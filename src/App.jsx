@@ -2,7 +2,7 @@ import InterviewPanel from '@/components/interview/InterviewPanel';
 import TimerPanel from '@/components/timer/TimerPanel';
 import TopicsPanel from '@/components/topics/TopicsPanel';
 import { usePersistence } from '@/hooks/usePersistence';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function App() {
   const [mode, setMode] = usePersistence('impromptu-mode', 'topics');
@@ -18,6 +18,15 @@ export default function App() {
     setTimerKey((k) => k + 1);
     setMode('timer');
   }
+
+  useEffect(() => {
+    const onKeyDown = (e) => {
+      if (e.code !== 'Escape') return;
+      if (mode === 'timer') setMode('topics');
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [mode, setMode]);
 
   const tabs = [
     { id: 'topics', label: 'যা তা টপিক' },
