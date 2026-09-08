@@ -134,14 +134,14 @@ export default function TimerPanel({ topic, initialDuration = 60 }) {
   const digitsEditable = !running && !finished;
 
   return (
-    <div className="mx-auto flex max-w-md flex-col items-center gap-6 pt-2">
+    <div className="mx-auto flex max-w-md flex-col items-center gap-6 max-md:gap-3 pt-2">
       <div className="flex min-h-[44px] items-center justify-center">
         {topic && (
           <div className="text-center">
-            <div className="mb-1 text-xs font-bold uppercase tracking-widest text-[#81928a]">
-              যা নিয়ে কথা বলবেন
+            <div className="mb-1 text-xs font-bold uppercase tracking-widest text-[#81928a] max-md:text-[0.6rem] max-md:mb-0.5">
+              যা যা নিয়ে কথা বলবেন
             </div>
-            <div className="font-display text-xl font-bold text-[#1a3c34]">
+            <div className="font-display text-xl font-bold text-[#1a3c34] max-md:text-lg">
               {topic}
             </div>
           </div>
@@ -149,7 +149,7 @@ export default function TimerPanel({ topic, initialDuration = 60 }) {
       </div>
 
       <div
-        className={`relative h-[425px] w-[425px] max-w-[88vw] transition-all sm:h-[500px] sm:w-[500px] ${running ? '' : ''}`}
+        className={`relative h-[425px] w-[425px] max-w-[88vw] transition-all sm:h-[500px] sm:w-[500px] max-md:h-[min(78vw,46vh)] max-md:w-[min(78vw,46vh)] ${running ? '' : ''}`}
       >
         <svg className="h-full w-full -rotate-90" viewBox="0 0 260 260">
           <circle className="tp-ring-track" cx="130" cy="130" r="115" />
@@ -163,7 +163,7 @@ export default function TimerPanel({ topic, initialDuration = 60 }) {
         </svg>
 
         <div
-          className={`tp-time-display absolute left-1/2 flex -translate-x-1/2 items-baseline font-display text-[3.5rem] leading-none text-[#1a3c34] sm:text-7xl ${
+          className={`tp-time-display absolute left-1/2 flex -translate-x-1/2 items-baseline font-display leading-none text-[#1a3c34] text-[3.5rem] sm:text-7xl max-md:text-[clamp(2rem,14vw,3.5rem)] ${
             running ? 'top-1/2 -translate-y-1/2' : 'top-[42%]'
           } ${finished ? 'finished' : ''}`}
         >
@@ -199,7 +199,7 @@ export default function TimerPanel({ topic, initialDuration = 60 }) {
         </div>
 
         <div
-          className={`absolute left-1/2 top-[58%] flex -translate-x-1/2 gap-4 transition-opacity ${running ? 'pointer-events-none opacity-0' : 'opacity-100'}`}
+          className={`absolute left-1/2 top-[58%] flex -translate-x-1/2 gap-4 max-md:gap-2 transition-opacity ${running ? 'pointer-events-none opacity-0' : 'opacity-100'}`}
         >
           <button
             type="button"
@@ -212,7 +212,7 @@ export default function TimerPanel({ topic, initialDuration = 60 }) {
               totalRef.current = newTotal;
               setRemaining(Math.max(1, current - diff));
             }}
-            className="cursor-pointer rounded-full border-2 border-[#1a3c34] px-6 py-2.5 font-display text-lg font-bold text-[#1a3c34] transition-colors hover:bg-[#1a3c34] hover:text-[#f9f5eb] disabled:cursor-not-allowed disabled:opacity-35"
+            className="cursor-pointer rounded-full border-2 border-[#1a3c34] px-6 py-2.5 font-display text-lg font-bold text-[#1a3c34] transition-colors hover:bg-[#1a3c34] hover:text-[#f9f5eb] disabled:cursor-not-allowed disabled:opacity-35 max-md:border max-md:px-3.5 max-md:py-1.5 max-md:text-sm"
           >
             −0:30
           </button>
@@ -224,24 +224,24 @@ export default function TimerPanel({ topic, initialDuration = 60 }) {
               totalRef.current = parseTimeFromDisplay() + 30;
               setRemaining(totalRef.current);
             }}
-            className="cursor-pointer rounded-full border-2 border-[#1a3c34] px-6 py-2.5 font-display text-lg font-bold text-[#1a3c34] transition-colors hover:bg-[#1a3c34] hover:text-[#f9f5eb] disabled:cursor-not-allowed disabled:opacity-35"
+            className="cursor-pointer rounded-full border-2 border-[#1a3c34] px-6 py-2.5 font-display text-lg font-bold text-[#1a3c34] transition-colors hover:bg-[#1a3c34] hover:text-[#f9f5eb] disabled:cursor-not-allowed disabled:opacity-35 max-md:border max-md:px-3.5 max-md:py-1.5 max-md:text-sm"
           >
             +0:30
           </button>
         </div>
       </div>
 
-      <div className="flex items-center gap-5">
+      <div className="flex items-center gap-5 max-md:gap-4">
         <button
           type="button"
           title={running ? 'বিরতি' : finished ? 'আবার শুরু' : 'শুরু'}
           onClick={doPlay}
-          className="flex size-[76px] items-center justify-center rounded-full bg-gradient-to-br from-[#d4c0f9] to-[#b89ee8] shadow-[0_4px_12px_rgba(184,158,232,0.4)] transition-transform hover:scale-105 active:scale-95 sm:size-[76px]"
+          className="flex size-[76px] items-center justify-center rounded-full bg-gradient-to-br from-[#d4c0f9] to-[#b89ee8] shadow-[0_4px_12px_rgba(184,158,232,0.4)] transition-transform hover:scale-105 active:scale-95 sm:size-[76px] max-md:size-[64px]"
         >
           {running ? (
-            <Pause className="size-8 fill-[#f9f5eb] text-[#f9f5eb]" />
+            <Pause className="size-8 fill-[#f9f5eb] text-[#f9f5eb] max-md:size-7" />
           ) : (
-            <Play className="ml-1 size-8 fill-[#f9f5eb] text-[#f9f5eb]" />
+            <Play className="ml-1 size-8 fill-[#f9f5eb] text-[#f9f5eb] max-md:size-7" />
           )}
         </button>
         <button
@@ -251,13 +251,13 @@ export default function TimerPanel({ topic, initialDuration = 60 }) {
             playClick();
             doReset();
           }}
-          className="group flex size-14 items-center justify-center rounded-full border-2 border-[#1a3c34] bg-transparent transition-colors hover:bg-[#1a3c34]"
+          className="group flex size-14 items-center justify-center rounded-full border-2 border-[#1a3c34] bg-transparent transition-colors hover:bg-[#1a3c34] max-md:size-12"
         >
-          <RotateCcw className="size-6 text-[#1a3c34] transition-colors group-hover:text-[#f9f5eb]" />
+          <RotateCcw className="size-6 text-[#1a3c34] transition-colors group-hover:text-[#f9f5eb] max-md:size-5" />
         </button>
       </div>
 
-      <p className="text-center text-xs font-semibold text-[#81928a]">
+      <p className="text-center text-xs font-semibold text-[#81928a] max-md:text-[0.7rem]">
         {running && '⏱ চলছে…'}
         {finished && '🕐 সময় শেষ! আবার শুনুন — আবার চেষ্টা করুন।'}
         {!running &&

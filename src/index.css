@@ -391,3 +391,39 @@
     opacity: 0.4;
   }
 }
+
+.kg-key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 26px;
+  padding: 0 9px;
+  margin: 0 2px;
+  border-radius: 7px;
+  font-family: 'Inter Variable', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  color: #fff;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.18);
+  box-shadow:
+    0 3px 0 rgba(0, 0, 0, 0.18),
+    0 2px 6px rgba(0, 0, 0, 0.1);
+  vertical-align: middle;
+}
+
+.kg-key-green {
+  background: linear-gradient(180deg, #3d8b6f, #2a5a4e);
+}
+
+.kg-key-gold {
+  background: linear-gradient(180deg, #f3b84e, #e39b2b);
+}
+
+.kg-key-pink {
+  background: linear-gradient(180deg, #ef8f8f, #d96a6a);
+}
+
+.kg-key.dice {
+  background: linear-gradient(180deg, #d7b46a, #b8934b);
+}

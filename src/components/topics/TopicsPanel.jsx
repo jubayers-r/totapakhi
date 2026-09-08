@@ -251,6 +251,24 @@ export default function TopicsPanel({ onStartTimer }) {
           </div>
         )}
       </div>
+
+      {/* corner hint: minimal guide like bruno-simon */}
+      <div className="pointer-events-none fixed bottom-4 left-6 z-10 flex items-center gap-2 font-sans text-sm font-semibold text-[rgba(26,60,52,0.55)] max-md:hidden portrait:min-[769px]:max-[1024px]:flex">
+        <span className="text-base leading-none">✦</span>
+        {!isSpinning &&
+          (effectiveTopic ? (
+            <span className="flex items-center gap-2">
+              <span className="kg-key kg-key-green">Space</span> আবার ঘোরান
+              <span className="text-[rgba(26,60,52,0.3)]">·</span>
+              <span className="kg-key kg-key-gold">Enter</span> টাইমার
+            </span>
+          ) : (
+            <span className="flex items-center gap-2">
+              <span className="kg-key kg-key-green">Space</span> শর্টকাটে চাকা
+              ঘোরান
+            </span>
+          ))}
+      </div>
     </div>
   );
 }
