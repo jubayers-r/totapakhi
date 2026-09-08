@@ -88,7 +88,7 @@ export default function App() {
             initialDuration={60}
           />
           <div className="pointer-events-none fixed bottom-4 left-6 z-10 flex items-center gap-2 font-sans text-sm font-semibold text-[rgba(26,60,52,0.55)] max-md:hidden portrait:min-[769px]:max-[1024px]:flex">
-            <span className="text-base leading-none">✦</span>
+            {/* <span className="text-base leading-none">-</span> */}
             <span className="kg-key kg-key-pink">Esc</span> পিছনে ফেরত যান
           </div>
         </div>

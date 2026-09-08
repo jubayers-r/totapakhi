@@ -231,7 +231,7 @@ export default function TopicsPanel({ onStartTimer }) {
         {effectiveTopic?.hints?.length > 0 && (
           <div className="w-full max-w-[620px] translate-x-[-38px] px-4 pt-8 max-md:translate-x-0 portrait:min-[769px]:max-[1024px]:translate-x-0">
             <p className="mb-2 text-center font-[cursive] text-xl font-extrabold text-[#e6a446] max-md:text-lg">
-              ✦ কথা শুরু করার ভাবনা ✦
+              কথা শুরু করার ভাবনা ('v')
             </p>
             <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
               {effectiveTopic.hints.map((hint, i) => (
@@ -254,7 +254,7 @@ export default function TopicsPanel({ onStartTimer }) {
 
       {/* corner hint: minimal guide like bruno-simon */}
       <div className="pointer-events-none fixed bottom-4 left-6 z-10 flex items-center gap-2 font-sans text-sm font-semibold text-[rgba(26,60,52,0.55)] max-md:hidden portrait:min-[769px]:max-[1024px]:flex">
-        <span className="text-base leading-none">✦</span>
+        {/* <span className="text-base leading-none">-</span> */}
         {!isSpinning &&
           (effectiveTopic ? (
             <span className="flex items-center gap-2">
