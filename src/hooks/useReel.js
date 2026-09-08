@@ -201,6 +201,7 @@ export function useReel({ topics, onLanded, disabled }) {
     if (state.animFrameId) cancelAnimationFrame(state.animFrameId);
     state.isSpinning = false;
     state.lastTopicId = null;
+    setLastLanded(null);
     const raf = requestAnimationFrame(() => setIsSpinning(false));
     reinitReel();
     return () => cancelAnimationFrame(raf);
