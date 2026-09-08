@@ -66,16 +66,16 @@ export default function TopicsPanel({ onStartTimer }) {
   return (
     <div className="mx-auto flex min-h-screen w-full max-w-[1400px] items-center justify-center gap-12 px-12 pt-[calc(2rem+50px)] pb-8 max-md:min-h-fit max-md:flex-col max-md:gap-2 max-md:px-8 max-md:pt-2 max-md:pb-8 portrait:min-[769px]:max-[1024px]:min-h-fit portrait:min-[769px]:max-[1024px]:flex-col portrait:min-[769px]:max-[1024px]:gap-6 portrait:min-[769px]:max-[1024px]:px-8 portrait:min-[769px]:max-[1024px]:pt-2 portrait:min-[769px]:max-[1024px]:pb-8 max-[480px]:px-4 max-[480px]:pb-8">
       {/* ---- left panel ---- */}
-      <div className="flex w-auto max-w-full shrink-0 flex-col items-center max-md:w-auto max-md:text-center max-md:pt-5 portrait:min-[769px]:max-[1024px]:w-auto portrait:min-[769px]:max-[1024px]:text-center">
+      <div className="flex w-[450px] max-w-full shrink-0 flex-col items-center max-md:w-auto max-md:text-center max-md:pt-5 portrait:min-[769px]:max-[1024px]:w-auto portrait:min-[769px]:max-[1024px]:text-center">
         <img
           src="/totapakhi-logo.png"
           alt="তোতাপাখি"
-          className="h-auto w-full max-w-[700px] max-[480px]:max-w-[280px]"
+          className="h-auto w-full max-w-[700px] portrait:min-[769px]:max-[1024px]:max-w-[480px] max-md:max-w-[400px] max-[480px]:max-w-[280px]"
         />
         <img
           src="/header.png"
           alt="তোতাপাখি হেডার"
-          className="mt-4 h-auto w-full max-w-[700px] max-md:max-w-[280px]"
+          className="mt-4 h-auto w-full max-w-[400px] max-md:max-w-[340px] max-[480px]:max-w-[240px]"
         />
       </div>
 
@@ -184,17 +184,17 @@ export default function TopicsPanel({ onStartTimer }) {
         </div>
 
         {/* mobile buttons */}
-        <div className="mt-5 hidden justify-center gap-3 max-md:mt-12 max-md:flex portrait:min-[769px]:max-[1024px]:mt-12 portrait:min-[769px]:max-[1024px]:flex">
+        <div className="mt-5 hidden w-full justify-center gap-3 max-md:mt-12 max-md:flex portrait:min-[769px]:max-[1024px]:mt-12 portrait:min-[769px]:max-[1024px]:flex">
           <button
             onClick={() => triggerSpin(30)}
             disabled={isSpinning}
-            className="inline-block rounded-full border-2 border-[#1a3c34] bg-gradient-to-br from-[#2a5a4e] to-[#1a3c34] px-9 py-[0.75rem] font-display text-[1.15rem] font-bold text-[#f9f5eb] shadow-[0_4px_12px_rgba(26,60,52,0.3)] transition-transform active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
+            className="min-w-0 flex-1 rounded-full border-2 border-[#1a3c34] bg-gradient-to-br from-[#2a5a4e] to-[#1a3c34] px-4 py-[0.75rem] font-display text-[1.15rem] font-bold text-[#f9f5eb] shadow-[0_4px_12px_rgba(26,60,52,0.3)] transition-transform active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 whitespace-nowrap tracking-wider max-[480px]:px-2 max-[480px]:py-[0.6rem] max-[480px]:text-[0.95rem] max-[480px]:tracking-wide"
           >
             ঘোরান চাকা!
           </button>
           <button
             onClick={() => onStartTimer(effectiveTopic?.topic ?? null)}
-            className="inline-block rounded-full border-2 border-[#1a3c34] bg-transparent px-9 py-[0.75rem] font-display text-[1.15rem] font-bold text-[#1a3c34] transition-colors hover:bg-[#1a3c34] hover:text-[#f9f5eb]"
+            className="min-w-0 flex-1 rounded-full border-2 border-[#1a3c34] bg-transparent px-4 py-[0.75rem] font-display text-[1.15rem] font-bold text-[#1a3c34] transition-colors hover:bg-[#1a3c34] hover:text-[#f9f5eb] whitespace-nowrap tracking-wider max-[480px]:px-2 max-[480px]:py-[0.6rem] max-[480px]:text-[0.95rem] max-[480px]:tracking-wide"
           >
             টাইমার →
           </button>
@@ -202,20 +202,20 @@ export default function TopicsPanel({ onStartTimer }) {
 
         {/* ideas grid: shown once a topic lands */}
         {effectiveTopic?.hints?.length > 0 && (
-          <div className="w-full max-w-[620px] px-4 pt-2">
-            <p className="mb-2 text-center font-[cursive] text-2xl font-extrabold text-[#e6a446]">
+          <div className="w-full max-w-[620px] translate-x-[-38px] px-4 pt-8 max-md:translate-x-0 portrait:min-[769px]:max-[1024px]:translate-x-0">
+            <p className="mb-2 text-center font-[cursive] text-xl font-extrabold text-[#e6a446] max-md:text-lg">
               ✦ কথা শুরু করার ভাবনা ✦
             </p>
             <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
               {effectiveTopic.hints.map((hint, i) => (
                 <div
                   key={i}
-                  className="flex items-start gap-2 rounded-xl border border-[rgba(26,60,52,0.12)] bg-[rgba(26,60,52,0.03)] p-3 text-left"
+                  className="flex items-start gap-2 rounded-xl border border-[rgba(26,60,52,0.12)] bg-[rgba(26,60,52,0.03)] p-3 text-left max-md:p-2.5"
                 >
-                  <span className="font-display text-lg font-bold text-[#e6a446]">
+                  <span className="font-display text-lg font-bold text-[#e6a446] max-md:text-base">
                     {i + 1}
                   </span>
-                  <span className="text-sm leading-snug text-[#1a3c34]">
+                  <span className="text-sm leading-snug text-[#1a3c34] max-md:text-[0.82rem]">
                     {hint}
                   </span>
                 </div>
