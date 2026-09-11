@@ -249,10 +249,15 @@ export function useReel({ topics, onLanded, disabled }) {
     state.lastTopicId = list[finalIndex].id;
     const finalTopic = list[finalIndex];
 
+    // Never repeat the landing topic in the visible strip: build the strip from
+    // the other topics only, then force the landing topic at the landing index.
     let reelTopics = [];
-    const textPool = list.map((t) => t.topic);
+    const otherTopics = list.filter((t) => t.id !== finalTopic.id);
+    const fillerPool = otherTopics.length
+      ? otherTopics.map((t) => t.topic)
+      : [finalTopic.topic];
     while (reelTopics.length < REEL_COUNT) {
-      reelTopics = reelTopics.concat(shuffleArray(textPool));
+      reelTopics = reelTopics.concat(shuffleArray(fillerPool));
     }
     reelTopics = reelTopics.slice(0, REEL_COUNT);
     reelTopics[LANDING_INDEX] = finalTopic.topic;
