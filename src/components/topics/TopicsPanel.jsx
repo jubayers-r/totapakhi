@@ -10,7 +10,7 @@ import { usePersistence } from '@/hooks/usePersistence';
 import { useReel } from '@/hooks/useReel';
 import { ensureAudioContext, playClunk } from '@/lib/sounds';
 import { Dice5, UserRound } from 'lucide-react';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import Lever from './Lever';
 
 const CATEGORY_LIST = Object.values(CATEGORIES).filter(
@@ -52,8 +52,17 @@ export default function TopicsPanel({ onStartTimer }) {
 
   const effectiveTopic = lastLanded;
 
+  const spinCountRef = useRef(0);
+
+  useEffect(() => {
+    if (!lastLanded) {
+      spinCountRef.current = 0;
+    }
+  }, [lastLanded]);
+
   const triggerSpin = useCallback(
     (velocity) => {
+      spinCountRef.current += 1;
       ensureAudioContext();
       playClunk();
       spin(velocity);
@@ -227,8 +236,8 @@ export default function TopicsPanel({ onStartTimer }) {
           </button>
         </div>
 
-        {/* ideas grid: shown once a topic lands */}
-        {effectiveTopic?.hints?.length > 0 && (
+        {/* ideas grid: shown once a topic lands (first spin only) */}
+        {!isSpinning && spinCountRef.current === 1 && effectiveTopic?.hints?.length > 0 && (
           <div className="w-full max-w-[620px] translate-x-[-38px] px-4 pt-8 max-md:translate-x-0 portrait:min-[769px]:max-[1024px]:translate-x-0">
             <p className="mb-2 text-center font-[cursive] text-xl font-extrabold text-[#e6a446] max-md:text-lg">
               কথা শুরু করার ভাবনা ('v')
