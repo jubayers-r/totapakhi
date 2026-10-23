@@ -1,13 +1,14 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type RefObject } from 'react';
 import { playLand, playTick } from '@/lib/sounds';
+import type { Topic } from '@/types';
 
-function getItemHeight() {
+function getItemHeight(): number {
   if (typeof window === 'undefined') return 130;
   if (window.innerWidth <= 480) return 120;
   return 130;
 }
 
-function shuffleArray(array) {
+function shuffleArray<T>(array: T[]): T[] {
   const shuffled = array.slice();
   for (let i = shuffled.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -16,7 +17,7 @@ function shuffleArray(array) {
   return shuffled;
 }
 
-function splitAtSpace(text, pos) {
+function splitAtSpace(text: string, pos: number): number {
   for (let j = pos; j >= 0; j--) {
     if (text[j] === ' ') return j;
   }
@@ -26,13 +27,14 @@ function splitAtSpace(text, pos) {
   return -1;
 }
 
-function fitTextToWidth(items, containerWidth) {
+function fitTextToWidth(items: HTMLCollection, containerWidth: number): void {
   const w = typeof window === 'undefined' ? 1440 : window.innerWidth;
   const maxFontSize = w <= 480 ? 2.0 : w <= 768 ? 2.4 : 3.5;
   const minFontSize = w <= 480 ? 0.85 : w <= 768 ? 1.0 : 1.15;
   const wrapThreshold = w <= 480 ? 10 : w <= 768 ? 12 : 15;
 
-  for (const item of items) {
+  for (let idx = 0; idx < items.length; idx++) {
+    const item = items[idx] as HTMLElement;
     const text = item.textContent;
     if (!text) continue;
     const wordCount = text.trim().split(/\s+/).length;
@@ -43,7 +45,7 @@ function fitTextToWidth(items, containerWidth) {
 
       if (wordCount > 8 && bestBreak > 0) {
         const third1 = Math.floor(text.length / 3);
-        const third2 = Math.floor(2 * text.length / 3);
+        const third2 = Math.floor((2 * text.length) / 3);
         const break1 = splitAtSpace(text, third1);
         const break2 = splitAtSpace(text, Math.max(third2, break1 + 1));
 
@@ -87,26 +89,46 @@ function fitTextToWidth(items, containerWidth) {
   }
 }
 
+export interface UseReelProps {
+  topics: Topic[];
+  onLanded?: (topic: Topic) => void;
+  disabled?: boolean;
+}
+
+export interface UseReelReturn {
+  windowRef: RefObject<HTMLDivElement | null>;
+  stripRef: RefObject<HTMLDivElement | null>;
+  spin: (initialVelocity?: number) => void;
+  isSpinning: boolean;
+  lastLanded: Topic | null;
+}
+
+interface ReelState {
+  isSpinning: boolean;
+  lastTopicId: string | null;
+  animFrameId: number | null;
+}
+
 /**
  * Slot-machine reel for topic selection.
  * Drives the DOM strip imperatively (rAF physics + spring settle), exactly like
  * the original site. `topics` is an array of topic objects ({ topic, hints, ... }).
  * Calls `onLanded(topicObject)` when the reel settles on a topic.
  */
-export function useReel({ topics, onLanded, disabled }) {
-  const windowRef = useRef(null);
-  const stripRef = useRef(null);
+export function useReel({ topics, onLanded, disabled }: UseReelProps): UseReelReturn {
+  const windowRef = useRef<HTMLDivElement>(null);
+  const stripRef = useRef<HTMLDivElement>(null);
 
   const [isSpinning, setIsSpinning] = useState(false);
-  const [lastLanded, setLastLanded] = useState(null);
+  const [lastLanded, setLastLanded] = useState<Topic | null>(null);
 
-  const stateRef = useRef({
+  const stateRef = useRef<ReelState>({
     isSpinning: false,
     lastTopicId: null,
     animFrameId: null,
   });
 
-  const topicsRef = useRef(topics);
+  const topicsRef = useRef<Topic[]>(topics);
   const onLandedRef = useRef(onLanded);
   const disabledRef = useRef(disabled);
 
@@ -119,11 +141,11 @@ export function useReel({ topics, onLanded, disabled }) {
   useEffect(() => {
     const state = stateRef.current;
     return () => {
-      state.animFrameId && cancelAnimationFrame(state.animFrameId);
+      if (state.animFrameId) cancelAnimationFrame(state.animFrameId);
     };
   }, []);
 
-  function buildReel(reelTopics, landingIndex, itemHeight) {
+  function buildReel(reelTopics: string[], landingIndex: number, itemHeight: number) {
     const strip = stripRef.current;
     const windowEl = windowRef.current;
     if (!strip || !windowEl) return;
@@ -145,7 +167,7 @@ export function useReel({ topics, onLanded, disabled }) {
     fitTextToWidth(strip.children, windowEl.offsetWidth - 32);
   }
 
-  function styleItemsByPosition(currentY, itemHeight, windowHeight) {
+  function styleItemsByPosition(currentY: number, itemHeight: number, windowHeight: number) {
     const strip = stripRef.current;
     if (!strip) return;
     const viewportCenter = windowHeight / 2;
@@ -156,8 +178,9 @@ export function useReel({ topics, onLanded, disabled }) {
       const norm = Math.min(dist / itemHeight, 1);
       const scale = 1.6 - norm * 0.6;
       const opacity = 1 - norm * 0.7;
-      items[i].style.transform = 'scale(' + scale + ')';
-      items[i].style.opacity = opacity;
+      const el = items[i] as HTMLElement;
+      el.style.transform = 'scale(' + scale + ')';
+      el.style.opacity = String(opacity);
     }
   }
 
@@ -201,13 +224,14 @@ export function useReel({ topics, onLanded, disabled }) {
     if (state.animFrameId) cancelAnimationFrame(state.animFrameId);
     state.isSpinning = false;
     state.lastTopicId = null;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLastLanded(null);
     const raf = requestAnimationFrame(() => setIsSpinning(false));
     reinitReel();
     return () => cancelAnimationFrame(raf);
   }, [topics]);
 
-  function generateTopic(initialVelocity) {
+  function generateTopic(initialVelocity?: number) {
     const strip = stripRef.current;
     const windowEl = windowRef.current;
     const list = topicsRef.current;
@@ -238,7 +262,7 @@ export function useReel({ topics, onLanded, disabled }) {
     const REEL_COUNT = LANDING_INDEX + 3;
 
     const finalIndex = (() => {
-      let idx;
+      let idx: number;
       let safety = 0;
       do {
         idx = Math.floor(Math.random() * list.length);
@@ -251,7 +275,7 @@ export function useReel({ topics, onLanded, disabled }) {
 
     // Never repeat the landing topic in the visible strip: build the strip from
     // the other topics only, then force the landing topic at the landing index.
-    let reelTopics = [];
+    let reelTopics: string[] = [];
     const otherTopics = list.filter((t) => t.id !== finalTopic.id);
     const fillerPool = otherTopics.length
       ? otherTopics.map((t) => t.topic)
@@ -269,7 +293,7 @@ export function useReel({ topics, onLanded, disabled }) {
     let position = 0;
     let velocity = INITIAL_VELOCITY;
     let lastBoundaryIndex = 0;
-    let lastFrameTime = null;
+    let lastFrameTime: number | null = null;
 
     function snapToTarget() {
       const startY = -position;
@@ -277,20 +301,24 @@ export function useReel({ topics, onLanded, disabled }) {
       const startTime = performance.now();
       const duration = 650;
 
-      function springAnimate(now) {
+      function springAnimate(now: number) {
         const elapsed = now - startTime;
         const t = Math.min(elapsed / duration, 1);
         const spring = 1 - Math.exp(-7 * t) * Math.cos(5 * t);
         const y = startY + distance * spring;
-        strip.style.transform = 'translateY(' + y + 'px)';
-        styleItemsByPosition(y, itemHeight, windowHeight);
+        if (strip) {
+          strip.style.transform = 'translateY(' + y + 'px)';
+          styleItemsByPosition(y, itemHeight, windowHeight);
+        }
         if (t < 1) {
           state.animFrameId = requestAnimationFrame(springAnimate);
         } else {
-          strip.style.transform = 'translateY(' + TARGET_Y + 'px)';
-          strip.classList.add('settled');
-          const landingItem = strip.querySelector('[data-landing="true"]');
-          if (landingItem) landingItem.classList.add('landed');
+          if (strip) {
+            strip.style.transform = 'translateY(' + TARGET_Y + 'px)';
+            strip.classList.add('settled');
+            const landingItem = strip.querySelector('[data-landing="true"]');
+            if (landingItem) landingItem.classList.add('landed');
+          }
           playLand();
           state.isSpinning = false;
           setIsSpinning(false);
@@ -302,7 +330,7 @@ export function useReel({ topics, onLanded, disabled }) {
       state.animFrameId = requestAnimationFrame(springAnimate);
     }
 
-    function animate(timestamp) {
+    function animate(timestamp: number) {
       if (lastFrameTime === null) lastFrameTime = timestamp;
       const rawDt = (timestamp - lastFrameTime) / 16.667;
       const dt = Math.min(rawDt, 3);
@@ -316,8 +344,10 @@ export function useReel({ topics, onLanded, disabled }) {
       position += velocity * dt;
       velocity *= Math.pow(FRICTION, dt);
 
-      strip.style.transform = 'translateY(' + -position + 'px)';
-      styleItemsByPosition(-position, itemHeight, windowHeight);
+      if (strip) {
+        strip.style.transform = 'translateY(' + -position + 'px)';
+        styleItemsByPosition(-position, itemHeight, windowHeight);
+      }
 
       const currentBoundaryIndex = Math.floor(position / itemHeight);
       if (currentBoundaryIndex > lastBoundaryIndex) {

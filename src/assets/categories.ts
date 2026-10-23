@@ -1,4 +1,6 @@
-export const CATEGORIES = {
+import type { Category } from '@/types';
+
+export const CATEGORIES: Record<string, Category> = {
   random: {
     id: 'random',
     label: 'হযবরল',

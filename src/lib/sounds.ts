@@ -1,17 +1,22 @@
-let audioCtx = null;
+let audioCtx: AudioContext | null = null;
 
-export function ensureAudioContext() {
+export function ensureAudioContext(): AudioContext | null {
   if (typeof window === 'undefined') return null;
   if (!audioCtx) {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const AudioContextClass =
+      window.AudioContext ||
+      (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+    if (AudioContextClass) {
+      audioCtx = new AudioContextClass();
+    }
   }
-  if (audioCtx.state === 'suspended') {
+  if (audioCtx && audioCtx.state === 'suspended') {
     audioCtx.resume();
   }
   return audioCtx;
 }
 
-export function playClunk() {
+export function playClunk(): void {
   const ctx = ensureAudioContext();
   if (!ctx) return;
   const now = ctx.currentTime;
@@ -37,7 +42,7 @@ export function playClunk() {
   noise.stop(now + 0.06);
 }
 
-export function playTick(progress) {
+export function playTick(progress: number): void {
   const ctx = ensureAudioContext();
   if (!ctx) return;
   const now = ctx.currentTime;
@@ -61,11 +66,11 @@ export function playTick(progress) {
   osc.stop(now + 0.06);
 }
 
-export function playLand() {
+export function playLand(): void {
   const ctx = ensureAudioContext();
   if (!ctx) return;
   const now = ctx.currentTime;
-  const notes = [
+  const notes: [number, number, number][] = [
     [880, 0.15, 0.6],
     [1320, 0.1, 0.5],
     [1760, 0.06, 0.45],
@@ -85,7 +90,7 @@ export function playLand() {
   });
 }
 
-export function playClick() {
+export function playClick(): void {
   const ctx = ensureAudioContext();
   if (!ctx) return;
   const now = ctx.currentTime;
@@ -101,7 +106,7 @@ export function playClick() {
   osc.stop(now + 0.1);
 }
 
-export function playStartChime() {
+export function playStartChime(): void {
   const ctx = ensureAudioContext();
   if (!ctx) return;
   const now = ctx.currentTime;
@@ -134,7 +139,7 @@ export function playStartChime() {
   });
 }
 
-export function playAlarm() {
+export function playAlarm(): void {
   const ctx = ensureAudioContext();
   if (!ctx) return;
   const now = ctx.currentTime;
