@@ -4,10 +4,15 @@ import { playClunk, ensureAudioContext } from '@/lib/sounds';
 const MAX_ANGLE = 180;
 const DRAG_SENSITIVITY = 280;
 
-export default function Lever({ onSpin, disabled }) {
-  const armRef = useRef(null);
-  const knobRef = useRef(null);
-  const hintRef = useRef(null);
+export interface LeverProps {
+  onSpin?: (velocity: number) => void;
+  disabled?: boolean;
+}
+
+export default function Lever({ onSpin, disabled }: LeverProps) {
+  const armRef = useRef<HTMLDivElement>(null);
+  const knobRef = useRef<HTMLDivElement>(null);
+  const hintRef = useRef<HTMLImageElement>(null);
 
   const dragRef = useRef({ isDragging: false, startY: 0, currentAngle: 0, hasMoved: false });
 
@@ -22,7 +27,7 @@ export default function Lever({ onSpin, disabled }) {
   }, []);
 
   const handlePointerDown = useCallback(
-    (e) => {
+    (e: React.PointerEvent<HTMLDivElement>) => {
       const arm = armRef.current;
       const knob = knobRef.current;
       if (!arm || !knob) return;
@@ -47,10 +52,10 @@ export default function Lever({ onSpin, disabled }) {
 
       ensureAudioContext();
     },
-    [disabled],
+    [disabled]
   );
 
-  const handlePointerMove = useCallback((e) => {
+  const handlePointerMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
     const arm = armRef.current;
     const knob = knobRef.current;
     const drag = dragRef.current;

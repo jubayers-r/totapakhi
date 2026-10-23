@@ -2,25 +2,26 @@ import InterviewPanel from '@/components/interview/InterviewPanel';
 import TimerPanel from '@/components/timer/TimerPanel';
 import TopicsPanel from '@/components/topics/TopicsPanel';
 import { usePersistence } from '@/hooks/usePersistence';
+import type { AppMode } from '@/types';
 import { useEffect, useState } from 'react';
 
 export default function App() {
-  const [mode, setMode] = usePersistence('impromptu-mode', 'topics');
-  const [timerTopic, setTimerTopic] = useState(null);
-  const [timerKey, setTimerKey] = useState(0);
+  const [mode, setMode] = usePersistence<AppMode>('impromptu-mode', 'topics');
+  const [timerTopic, setTimerTopic] = useState<string | null>(null);
+  const [timerKey, setTimerKey] = useState<number>(0);
 
-  function goTo(m) {
+  function goTo(m: AppMode) {
     setMode(m);
   }
 
-  function startTimer(topic) {
+  function startTimer(topic: string | null) {
     setTimerTopic(topic ?? null);
     setTimerKey((k) => k + 1);
     setMode('timer');
   }
 
   useEffect(() => {
-    const onKeyDown = (e) => {
+    const onKeyDown = (e: KeyboardEvent) => {
       if (e.code !== 'Escape') return;
       if (mode === 'timer') setMode('topics');
     };
@@ -28,7 +29,7 @@ export default function App() {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [mode, setMode]);
 
-  const tabs = [
+  const tabs: { id: AppMode; label: string }[] = [
     { id: 'topics', label: 'যা তা টপিক' },
     { id: 'interview', label: 'ইন্টারভিউয়ে গলা ফাটানো' },
   ];
@@ -88,7 +89,6 @@ export default function App() {
             initialDuration={60}
           />
           <div className="pointer-events-none fixed bottom-4 left-6 z-10 flex items-center gap-2 font-sans text-sm font-semibold text-[rgba(26,60,52,0.55)] max-md:hidden portrait:min-[769px]:max-[1024px]:flex">
-            {/* <span className="text-base leading-none">-</span> */}
             <span className="kg-key kg-key-pink">Esc</span> পিছনে ফেরত যান
           </div>
         </div>

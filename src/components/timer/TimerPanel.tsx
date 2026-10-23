@@ -1,18 +1,23 @@
 import { playAlarm, playClick, playStartChime } from '@/lib/sounds';
 import { Pause, Play, RotateCcw } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 const CIRCUMFERENCE = 2 * Math.PI * 115;
 
-export default function TimerPanel({ topic, initialDuration = 60 }) {
+export interface TimerPanelProps {
+  topic?: string | null;
+  initialDuration?: number;
+}
+
+export default function TimerPanel({ topic, initialDuration = 60 }: TimerPanelProps) {
   const [remaining, setRemaining] = useState(initialDuration);
   const [running, setRunning] = useState(false);
   const [finished, setFinished] = useState(false);
 
   const totalRef = useRef(initialDuration);
-  const minuteRef = useRef(null);
-  const secondRef = useRef(null);
-  const ringRef = useRef(null);
+  const minuteRef = useRef<HTMLSpanElement>(null);
+  const secondRef = useRef<HTMLSpanElement>(null);
+  const ringRef = useRef<SVGCircleElement>(null);
 
   useEffect(() => {
     if (minuteRef.current)
@@ -23,7 +28,7 @@ export default function TimerPanel({ topic, initialDuration = 60 }) {
     }
     if (ringRef.current) {
       const progress = totalRef.current > 0 ? remaining / totalRef.current : 0;
-      ringRef.current.style.strokeDashoffset = CIRCUMFERENCE * (1 - progress);
+      ringRef.current.style.strokeDashoffset = String(CIRCUMFERENCE * (1 - progress));
     }
   }, [remaining, running]);
 
@@ -48,19 +53,19 @@ export default function TimerPanel({ topic, initialDuration = 60 }) {
   function parseTimeFromDisplay() {
     const mins = Math.max(
       0,
-      Math.min(99, parseInt(minuteRef.current?.textContent, 10) || 0)
+      Math.min(99, parseInt(minuteRef.current?.textContent || '0', 10) || 0)
     );
     const secs = Math.max(
       0,
-      Math.min(59, parseInt(secondRef.current?.textContent, 10) || 0)
+      Math.min(59, parseInt(secondRef.current?.textContent || '0', 10) || 0)
     );
     return mins * 60 + secs;
   }
 
-  function handleDigitKeydown(e) {
+  function handleDigitKeydown(e: React.KeyboardEvent<HTMLSpanElement>) {
     if (e.key === 'Enter') {
       e.preventDefault();
-      e.target.blur();
+      (e.target as HTMLElement).blur();
       return;
     }
     if (
@@ -85,17 +90,19 @@ export default function TimerPanel({ topic, initialDuration = 60 }) {
     setRemaining(seconds);
   }
 
-  function handleDigitFocus(e) {
+  function handleDigitFocus(e: React.FocusEvent<HTMLSpanElement>) {
     const range = document.createRange();
-    range.selectNodeContents(e.target);
+    range.selectNodeContents(e.target as Node);
     const sel = window.getSelection();
-    sel.removeAllRanges();
-    sel.addRange(range);
+    if (sel) {
+      sel.removeAllRanges();
+      sel.addRange(range);
+    }
   }
 
-  function handlePaste(e) {
+  function handlePaste(e: React.ClipboardEvent<HTMLSpanElement>) {
     e.preventDefault();
-    const text = (e.clipboardData || window.clipboardData).getData('text');
+    const text = e.clipboardData.getData('text');
     const digits = text.replace(/\D/g, '');
     document.execCommand('insertText', false, digits);
   }

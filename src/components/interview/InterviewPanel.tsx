@@ -1,4 +1,8 @@
-export default function InterviewPanel() {
+export interface InterviewPanelProps {
+  onBack?: () => void;
+}
+
+export default function InterviewPanel({ onBack: _onBack }: InterviewPanelProps = {}) {
   return (
     <div className="mx-auto flex min-h-[70vh] max-w-2xl flex-col items-center justify-center px-6 py-20 text-center">
       <div className="mb-6 rounded-full border-2 border-[#e6a446] px-6 py-2 font-display text-lg font-bold uppercase tracking-widest text-[#e6a446]">

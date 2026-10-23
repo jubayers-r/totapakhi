@@ -1,5 +1,5 @@
 import { CATEGORIES } from '@/assets/categories';
-import topicsByCategory from '@/assets/topics.json';
+import rawTopics from '@/assets/topics.json';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,9 +9,12 @@ import {
 import { usePersistence } from '@/hooks/usePersistence';
 import { useReel } from '@/hooks/useReel';
 import { ensureAudioContext, playClunk } from '@/lib/sounds';
+import type { Topic } from '@/types';
 import { Dice5, UserRound } from 'lucide-react';
 import { useCallback, useEffect, useMemo } from 'react';
 import Lever from './Lever';
+
+const topicsByCategory = rawTopics as unknown as Record<string, Topic[]>;
 
 const CATEGORY_LIST = Object.values(CATEGORIES).filter(
   (c) => c.id !== 'random'
@@ -20,14 +23,18 @@ const CATEGORY_LIST = Object.values(CATEGORIES).filter(
 const triggerClass =
   'inline-flex items-center gap-[6px] rounded-[20px] border-[1.5px] border-[rgba(26,60,52,0.25)] bg-transparent px-6 py-[0.6rem] font-sans text-[1.05rem] font-semibold text-[#1a3c34] cursor-pointer select-none transition-colors hover:border-[rgba(26,60,52,0.5)] hover:bg-[rgba(26,60,52,0.04)] max-md:gap-1 max-md:px-3.5 max-md:py-[0.45rem] max-md:text-[0.95rem] max-[480px]:gap-[3px] max-[480px]:px-[0.55rem] max-[480px]:py-[0.35rem] max-[480px]:text-[0.8rem]';
 
-export default function TopicsPanel({ onStartTimer }) {
-  const [categoryId, setCategoryId] = usePersistence(
+export interface TopicsPanelProps {
+  onStartTimer: (topic: string | null) => void;
+}
+
+export default function TopicsPanel({ onStartTimer }: TopicsPanelProps) {
+  const [categoryId, setCategoryId] = usePersistence<string>(
     'impromptu-category',
     'random'
   );
-  const [gender, setGender] = usePersistence('impromptu-gender', 'all');
+  const [gender, setGender] = usePersistence<string>('impromptu-gender', 'all');
 
-  const pool = useMemo(() => {
+  const pool = useMemo<Topic[]>(() => {
     const source =
       categoryId === 'random'
         ? Object.values(topicsByCategory).flat()
@@ -53,7 +60,7 @@ export default function TopicsPanel({ onStartTimer }) {
   const effectiveTopic = lastLanded;
 
   const triggerSpin = useCallback(
-    (velocity) => {
+    (velocity?: number) => {
       ensureAudioContext();
       playClunk();
       spin(velocity);
@@ -62,11 +69,11 @@ export default function TopicsPanel({ onStartTimer }) {
   );
 
   useEffect(() => {
-    const onKeyDown = (e) => {
+    const onKeyDown = (e: KeyboardEvent) => {
       if (e.code !== 'Space' && e.code !== 'Enter') return;
 
       const menuOpen = document.querySelector('[role="menu"]');
-      const el = e.target;
+      const el = e.target as HTMLElement | null;
       const interactive =
         el &&
         typeof el.closest === 'function' &&
@@ -88,7 +95,7 @@ export default function TopicsPanel({ onStartTimer }) {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [isSpinning, triggerSpin, effectiveTopic, onStartTimer]);
 
-  const currentCategory = CATEGORIES[categoryId];
+  const currentCategory = CATEGORIES[categoryId] || CATEGORIES.random;
 
   return (
     <div className="mx-auto flex min-h-screen w-full max-w-[1400px] items-center justify-center gap-12 px-12 pt-[calc(2rem+50px)] pb-8 max-md:min-h-fit max-md:flex-col max-md:gap-2 max-md:px-8 max-md:pt-2 max-md:pb-8 portrait:min-[769px]:max-[1024px]:min-h-fit portrait:min-[769px]:max-[1024px]:flex-col portrait:min-[769px]:max-[1024px]:gap-6 portrait:min-[769px]:max-[1024px]:px-8 portrait:min-[769px]:max-[1024px]:pt-2 portrait:min-[769px]:max-[1024px]:pb-8 max-[480px]:px-4 max-[480px]:pb-8">
@@ -228,10 +235,10 @@ export default function TopicsPanel({ onStartTimer }) {
         </div>
 
         {/* ideas grid: hidden while spinning, shown again after each selection */}
-        {!isSpinning && effectiveTopic?.hints?.length > 0 && (
+        {!isSpinning && effectiveTopic?.hints && effectiveTopic.hints.length > 0 && (
           <div className="w-full max-w-[620px] translate-x-[-38px] px-4 pt-8 max-md:translate-x-0 portrait:min-[769px]:max-[1024px]:translate-x-0">
             <p className="mb-2 text-center font-[cursive] text-xl font-extrabold text-[#e6a446] max-md:text-lg">
-              কথা শুরু করার ভাবনা ('v')
+              কথা শুরু করার ভাবনা (&apos;v&apos;)
             </p>
             <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
               {effectiveTopic.hints.map((hint, i) => (
@@ -254,7 +261,6 @@ export default function TopicsPanel({ onStartTimer }) {
 
       {/* corner hint: minimal guide like bruno-simon */}
       <div className="pointer-events-none fixed bottom-4 left-6 z-10 flex items-center gap-2 font-sans text-sm font-semibold text-[rgba(26,60,52,0.55)] max-md:hidden portrait:min-[769px]:max-[1024px]:flex">
-        {/* <span className="text-base leading-none">-</span> */}
         {!isSpinning &&
           (effectiveTopic ? (
             <span className="flex items-center gap-2">
