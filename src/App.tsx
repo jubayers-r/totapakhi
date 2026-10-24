@@ -1,6 +1,8 @@
 import InterviewPanel from '@/components/interview/InterviewPanel';
 import TimerPanel from '@/components/timer/TimerPanel';
 import TopicsPanel from '@/components/topics/TopicsPanel';
+import LanguageToggle from '@/components/ui/LanguageToggle';
+import { useLanguage } from '@/context/LanguageContext';
 import { usePersistence } from '@/hooks/usePersistence';
 import type { AppMode } from '@/types';
 import { useEffect, useState } from 'react';
@@ -9,6 +11,7 @@ export default function App() {
   const [mode, setMode] = usePersistence<AppMode>('impromptu-mode', 'topics');
   const [timerTopic, setTimerTopic] = useState<string | null>(null);
   const [timerKey, setTimerKey] = useState<number>(0);
+  const { t } = useLanguage();
 
   function goTo(m: AppMode) {
     setMode(m);
@@ -30,15 +33,20 @@ export default function App() {
   }, [mode, setMode]);
 
   const tabs: { id: AppMode; label: string }[] = [
-    { id: 'topics', label: 'যা তা টপিক' },
-    { id: 'interview', label: 'ইন্টারভিউয়ে গলা ফাটানো' },
+    { id: 'topics', label: t('যা তা টপিক', 'Wild Impromptu') },
+    { id: 'interview', label: t('ইন্টারভিউয়ে গলা ফাটানো', 'Spitfire Interview') },
   ];
 
   return (
     <main className="min-h-screen overflow-x-hidden bg-[#f9f5eb] text-[#1a3c34]">
+      {/* Top left language toggle */}
+      <div className="fixed top-4 left-6 z-20 max-md:left-3 max-md:top-3">
+        <LanguageToggle />
+      </div>
+
       {/* fixed tab bar, original style */}
       {mode !== 'timer' && (
-        <div className="fixed top-4 left-1/2 z-[15] flex max-w-[calc(100vw-1.5rem)] -translate-x-1/2 gap-2 overflow-x-auto rounded-[50px] bg-[rgba(26,60,52,0.08)] p-[5px] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden max-md:static max-md:top-auto max-md:left-auto max-md:z-auto max-md:mx-auto max-md:mt-4 max-md:w-full max-md:max-w-[calc(100vw-2rem)] max-md:translate-x-0 portrait:min-[769px]:max-[1024px]:static portrait:min-[769px]:max-[1024px]:top-auto portrait:min-[769px]:max-[1024px]:left-auto portrait:min-[769px]:max-[1024px]:z-auto portrait:min-[769px]:max-[1024px]:mx-auto portrait:min-[769px]:max-[1024px]:mt-4 portrait:min-[769px]:max-[1024px]:w-full portrait:min-[769px]:max-[1024px]:max-w-[calc(100vw-2rem)] portrait:min-[769px]:max-[1024px]:translate-x-0 max-md:gap-1.5 max-md:px-1 max-[480px]:gap-1 max-[480px]:px-0.5">
+        <div className="fixed top-4 left-1/2 z-[15] flex max-w-[calc(100vw-8rem)] -translate-x-1/2 gap-2 overflow-x-auto rounded-[50px] bg-[rgba(26,60,52,0.08)] p-[5px] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden max-md:static max-md:top-auto max-md:left-auto max-md:z-auto max-md:mx-auto max-md:mt-12 max-md:w-full max-md:max-w-[calc(100vw-2rem)] max-md:translate-x-0 portrait:min-[769px]:max-[1024px]:static portrait:min-[769px]:max-[1024px]:top-auto portrait:min-[769px]:max-[1024px]:left-auto portrait:min-[769px]:max-[1024px]:z-auto portrait:min-[769px]:max-[1024px]:mx-auto portrait:min-[769px]:max-[1024px]:mt-12 portrait:min-[769px]:max-[1024px]:w-full portrait:min-[769px]:max-[1024px]:max-w-[calc(100vw-2rem)] portrait:min-[769px]:max-[1024px]:translate-x-0 max-md:gap-1.5 max-md:px-1 max-[480px]:gap-1 max-[480px]:px-0.5">
           {tabs.map((tab) => (
             <button
               key={tab.id}
@@ -61,11 +69,11 @@ export default function App() {
           href="https://linktr.ee/aatagache.totapakhi"
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="আতা গাছে তোতা পাখি ©"
+          aria-label={t('আতা গাছে তোতা পাখি ©', 'Aata Gache Totapakhi ©')}
         >
           <img
             src="/brand-badge.png"
-            alt="আতা গাছে তোতা পাখি ©"
+            alt={t('আতা গাছে তোতা পাখি ©', 'Aata Gache Totapakhi ©')}
             className="fixed top-4 right-6 z-10 w-[330px] opacity-80 max-[1080px]:hidden"
           />
         </a>
@@ -81,7 +89,7 @@ export default function App() {
             onClick={() => setMode('topics')}
             className="fixed top-4 left-1/2 z-10 -translate-x-1/2 cursor-pointer rounded-full border-2 border-[#1a3c34] bg-transparent px-6 py-2 font-display text-lg font-bold text-[#1a3c34] transition-colors hover:bg-[#1a3c34] hover:text-[#f9f5eb] max-md:top-3 max-md:px-4 max-md:py-1.5 max-md:text-base"
           >
-            ← যা তা টপিক
+            {t('← যা তা টপিক', '← Wild Impromptu')}
           </button>
           <TimerPanel
             key={timerKey + (timerTopic ?? '')}
@@ -89,7 +97,7 @@ export default function App() {
             initialDuration={60}
           />
           <div className="pointer-events-none fixed bottom-4 left-6 z-10 flex items-center gap-2 font-sans text-sm font-semibold text-[rgba(26,60,52,0.55)] max-md:hidden portrait:min-[769px]:max-[1024px]:flex">
-            <span className="kg-key kg-key-pink">Esc</span> পিছনে ফেরত যান
+            <span className="kg-key kg-key-pink">Esc</span> {t('পিছনে ফেরত যান', 'Go back')}
           </div>
         </div>
       )}
@@ -100,12 +108,12 @@ export default function App() {
           href="https://linktr.ee/aatagache.totapakhi"
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="আতা গাছে তোতা পাখি ©"
+          aria-label={t('আতা গাছে তোতা পাখি ©', 'Aata Gache Totapakhi ©')}
           className="mx-auto mt-6 hidden w-[180px] opacity-80 max-[1080px]:block max-[480px]:w-[120px]"
         >
           <img
             src="/brand-badge.png"
-            alt="আতা গাছে তোতা পাখি ©"
+            alt={t('আতা গাছে তোতা পাখি ©', 'Aata Gache Totapakhi ©')}
             className="w-full"
           />
         </a>
