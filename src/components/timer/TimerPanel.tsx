@@ -1,8 +1,7 @@
+import { useLanguage } from '@/context/LanguageContext';
 import { playAlarm, playClick, playStartChime } from '@/lib/sounds';
 import { Pause, Play, RotateCcw } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
-
-const CIRCUMFERENCE = 2 * Math.PI * 115;
 
 export interface TimerPanelProps {
   topic?: string | null;
@@ -10,6 +9,7 @@ export interface TimerPanelProps {
 }
 
 export default function TimerPanel({ topic, initialDuration = 60 }: TimerPanelProps) {
+  const { t } = useLanguage();
   const [remaining, setRemaining] = useState(initialDuration);
   const [running, setRunning] = useState(false);
   const [finished, setFinished] = useState(false);
@@ -27,8 +27,9 @@ export default function TimerPanel({ topic, initialDuration = 60 }: TimerPanelPr
       secondRef.current.textContent = secs < 10 ? '0' + secs : String(secs);
     }
     if (ringRef.current) {
+      const circumference = 2 * Math.PI * 115;
       const progress = totalRef.current > 0 ? remaining / totalRef.current : 0;
-      ringRef.current.style.strokeDashoffset = String(CIRCUMFERENCE * (1 - progress));
+      ringRef.current.style.strokeDashoffset = String(circumference * (1 - progress));
     }
   }, [remaining, running]);
 
@@ -146,7 +147,7 @@ export default function TimerPanel({ topic, initialDuration = 60 }: TimerPanelPr
         {topic && (
           <div className="text-center">
             <div className="mb-1 text-xs font-bold uppercase tracking-widest text-[#81928a] max-md:text-[0.6rem] max-md:mb-0.5">
-              যা যা নিয়ে কথা বলবেন
+              {t('যা যা নিয়ে কথা বলবেন', 'Topic for Discussion')}
             </div>
             <div className="font-display text-xl font-bold text-[#1a3c34] max-md:text-lg">
               {topic}
@@ -241,7 +242,13 @@ export default function TimerPanel({ topic, initialDuration = 60 }: TimerPanelPr
       <div className="flex items-center gap-5 max-md:gap-4">
         <button
           type="button"
-          title={running ? 'বিরতি' : finished ? 'আবার শুরু' : 'শুরু'}
+          title={
+            running
+              ? t('বিরতি', 'Pause')
+              : finished
+                ? t('আবার শুরু', 'Restart')
+                : t('শুরু', 'Start')
+          }
           onClick={doPlay}
           className="flex size-[76px] items-center justify-center rounded-full bg-gradient-to-br from-[#d4c0f9] to-[#b89ee8] shadow-[0_4px_12px_rgba(184,158,232,0.4)] transition-transform hover:scale-105 active:scale-95 sm:size-[76px] max-md:size-[64px]"
         >
@@ -253,7 +260,7 @@ export default function TimerPanel({ topic, initialDuration = 60 }: TimerPanelPr
         </button>
         <button
           type="button"
-          title="রিসেট"
+          title={t('রিসেট', 'Reset')}
           onClick={() => {
             playClick();
             doReset();
@@ -265,11 +272,18 @@ export default function TimerPanel({ topic, initialDuration = 60 }: TimerPanelPr
       </div>
 
       <p className="text-center text-xs font-semibold text-[#81928a] max-md:text-[0.7rem]">
-        {running && '⏱ চলছে…'}
-        {finished && '🕐 সময় শেষ! আবার শুনুন — আবার চেষ্টা করুন।'}
+        {running && t('⏱ চলছে…', '⏱ Running…')}
+        {finished &&
+          t(
+            '🕐 সময় শেষ! আবার শুনুন — আবার চেষ্টা করুন।',
+            "🕐 Time's up! Listen back — give it another shot."
+          )}
         {!running &&
           !finished &&
-          'সময় বাড়াতে ঘড়ির সংখ্যা ক্লিক করে বদলান, অথবা ±0:30 ব্যবহার করুন।'}
+          t(
+            'সময় বাড়াতে ঘড়ির সংখ্যা ক্লিক করে বদলান, অথবা ±0:30 ব্যবহার করুন।',
+            'Click the digits to edit time, or use ±0:30.'
+          )}
       </p>
     </div>
   );

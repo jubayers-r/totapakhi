@@ -1,29 +1,44 @@
 import type { Category } from '@/types';
 
-export const CATEGORIES: Record<string, Category> = {
+export interface LocalizedCategory extends Category {
+  enLabel: string;
+  enSubtitle: string;
+}
+
+export const CATEGORIES: Record<string, LocalizedCategory> = {
   random: {
     id: 'random',
     label: 'হযবরল',
     subtitle: 'যেকোনো কিছু (সারপ্রাইজ)',
+    enLabel: 'Hodgepodge',
+    enSubtitle: 'Pure Chaos (Surprise Me)',
   },
   worsttake: {
     id: 'worsttake',
     label: 'পাল্টা যুক্তি',
     subtitle: 'বাজে মতামতের পক্ষে জোরালো তর্ক',
+    enLabel: "Devil's Advocate",
+    enSubtitle: 'Strong arguments for awful takes',
   },
   pitch: {
     id: 'pitch',
     label: '১ মিনিটের পিচ',
     subtitle: 'অদ্ভুত আইডিয়া বেচার কসরত',
+    enLabel: '60s Shark Pitch',
+    enSubtitle: 'Selling ridiculous startup ideas',
   },
   general: {
     id: 'general',
     label: 'গভীর ভাবনা',
     subtitle: 'জীবনবোধ ও মনের ভেতরের কথা',
+    enLabel: 'Deep Dive',
+    enSubtitle: 'Existential thoughts & raw honesty',
   },
   adda: {
     id: 'adda',
     label: 'স্মৃতি ও আড্ডা',
     subtitle: 'পুরোনো দিন, স্কুল ও মেস জীবনের গল্প',
+    enLabel: 'Nostalgia & Adda',
+    enSubtitle: 'Golden days, dorm life & memories',
   },
 };
