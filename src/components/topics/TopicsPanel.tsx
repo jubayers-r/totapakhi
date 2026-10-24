@@ -262,18 +262,18 @@ export default function TopicsPanel({ onStartTimer }: TopicsPanelProps) {
             <p className="mb-2 text-center font-[cursive] text-xl font-extrabold text-[#e6a446] max-md:text-lg">
               {t("কথা শুরু করার ভাবনা ('v')", "Talking Points / Hints ('v')")}
             </p>
-            <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
               {effectiveTopic.hints.map((hint, i) => (
                 <div
                   key={i}
-                  className="relative flex items-center overflow-hidden rounded-xl bg-[rgba(26,60,52,0.03)] p-3 text-left shadow-sm max-md:py-3 max-md:px-4 sm:min-h-[85px]"
+                  className="relative flex items-center overflow-hidden rounded-xl bg-[rgba(26,60,52,0.018)] p-3 text-left max-md:p-3 sm:min-h-[85px]"
                 >
-                  <p className="relative z-[1] w-full text-sm leading-snug text-[#1a3c34] pr-10 sm:pr-0 max-md:text-[0.85rem]">
+                  <p className="relative z-[1] w-full text-sm leading-snug text-[#1a3c34] max-md:text-[0.85rem]">
                     {hint}
                   </p>
                   <span
                     aria-hidden="true"
-                    className="pointer-events-none absolute font-display font-black leading-none bg-gradient-to-b from-[#e6a446]/35 to-transparent bg-clip-text text-transparent select-none right-1 bottom-0 text-[4.5rem] max-md:right-3 max-md:top-1/2 max-md:bottom-auto max-md:-translate-y-1/2 max-md:text-[2.2rem]"
+                    className="pointer-events-none absolute font-display font-black leading-none bg-gradient-to-b from-[#e6a446]/35 to-transparent bg-clip-text text-transparent select-none right-1.5 bottom-0 text-[3.2rem] max-md:right-2 max-md:top-1/2 max-md:bottom-auto max-md:-translate-y-1/2 max-md:text-[1.7rem]"
                   >
                     {i + 1}
                   </span>
