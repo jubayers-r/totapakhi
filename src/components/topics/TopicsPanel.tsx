@@ -266,9 +266,9 @@ export default function TopicsPanel({ onStartTimer }: TopicsPanelProps) {
               {effectiveTopic.hints.map((hint, i) => (
                 <div
                   key={i}
-                  className="relative flex items-center overflow-hidden rounded-xl bg-[rgba(26,60,52,0.03)] p-3 text-left shadow-sm max-md:py-3 max-md:px-4 sm:min-h-[85px] sm:items-start"
+                  className="relative flex items-center overflow-hidden rounded-xl bg-[rgba(26,60,52,0.03)] p-3 text-left shadow-sm max-md:py-3 max-md:px-4 sm:min-h-[85px]"
                 >
-                  <p className="relative z-[1] text-sm leading-snug text-[#1a3c34] pr-10 sm:pr-0 max-md:text-[0.85rem]">
+                  <p className="relative z-[1] w-full text-sm leading-snug text-[#1a3c34] pr-10 sm:pr-0 max-md:text-[0.85rem]">
                     {hint}
                   </p>
                   <span
