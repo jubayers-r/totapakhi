@@ -326,6 +326,9 @@
 }
 
 @media (max-width: 480px) {
+  .tp-reel-item {
+    padding: 0 0.35rem;
+  }
   .tp-reel-strip.settled .tp-reel-item.landed {
     transform: scale(1.5);
   }

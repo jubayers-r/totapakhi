@@ -17,14 +17,33 @@ function shuffleArray<T>(array: T[]): T[] {
   return shuffled;
 }
 
-function splitAtSpace(text: string, pos: number): number {
+function splitAtSpace(text: string, pos: number, preferClosest = false): number {
+  if (!preferClosest) {
+    for (let j = pos; j >= 0; j--) {
+      if (text[j] === ' ') return j;
+    }
+    for (let j = pos; j < text.length; j++) {
+      if (text[j] === ' ') return j;
+    }
+    return -1;
+  }
+  let before = -1;
   for (let j = pos; j >= 0; j--) {
-    if (text[j] === ' ') return j;
+    if (text[j] === ' ') {
+      before = j;
+      break;
+    }
   }
+  let after = -1;
   for (let j = pos; j < text.length; j++) {
-    if (text[j] === ' ') return j;
+    if (text[j] === ' ') {
+      after = j;
+      break;
+    }
   }
-  return -1;
+  if (before === -1) return after;
+  if (after === -1) return before;
+  return pos - before <= after - pos ? before : after;
 }
 
 function fitTextToWidth(items: HTMLCollection, containerWidth: number): void {
@@ -46,8 +65,8 @@ function fitTextToWidth(items: HTMLCollection, containerWidth: number): void {
       if (wordCount > 8 && bestBreak > 0) {
         const third1 = Math.floor(text.length / 3);
         const third2 = Math.floor((2 * text.length) / 3);
-        const break1 = splitAtSpace(text, third1);
-        const break2 = splitAtSpace(text, Math.max(third2, break1 + 1));
+        const break1 = splitAtSpace(text, third1, w <= 480);
+        const break2 = splitAtSpace(text, Math.max(third2, break1 + 1), w <= 480);
 
         if (break1 > 0 && break2 > break1) {
           item.innerHTML =
@@ -72,7 +91,15 @@ function fitTextToWidth(items: HTMLCollection, containerWidth: number): void {
       }
 
       const sizeMultiplier = wordCount > 8 ? 0.38 : 0.55;
-      item.style.fontSize = maxFontSize * sizeMultiplier + 'rem';
+      let calculatedSize = maxFontSize * sizeMultiplier;
+      if (w <= 480) {
+        const lines = item.innerHTML.split('<br>');
+        const maxLineLen = Math.max(...lines.map((l) => l.trim().length));
+        if (maxLineLen > 32) {
+          calculatedSize *= Math.max(0.8, 32 / maxLineLen);
+        }
+      }
+      item.style.fontSize = calculatedSize + 'rem';
       item.style.lineHeight = '1.4';
     } else {
       item.style.fontSize = maxFontSize + 'rem';
