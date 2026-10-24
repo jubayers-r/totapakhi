@@ -135,7 +135,7 @@ export default function TopicsPanel({ onStartTimer }: TopicsPanelProps) {
           className="h-auto w-full max-w-[700px] portrait:min-[769px]:max-[1024px]:max-w-[480px] max-md:max-w-[400px] max-[480px]:max-w-[280px]"
         />
         <img
-          src="/header.png"
+          src={lang === 'en' ? '/header-en.png' : '/header.png'}
           alt={t('তোতাপাখি হেডার', 'Totapakhi Header')}
           className="mt-4 h-auto w-full max-w-[400px] max-md:max-w-[340px] max-[480px]:max-w-[240px]"
         />

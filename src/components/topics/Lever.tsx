@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef } from 'react';
+import { useLanguage } from '@/context/LanguageContext';
 import { playClunk, ensureAudioContext } from '@/lib/sounds';
 
 const MAX_ANGLE = 180;
@@ -10,6 +11,7 @@ export interface LeverProps {
 }
 
 export default function Lever({ onSpin, disabled }: LeverProps) {
+  const { lang } = useLanguage();
   const armRef = useRef<HTMLDivElement>(null);
   const knobRef = useRef<HTMLDivElement>(null);
   const hintRef = useRef<HTMLImageElement>(null);
@@ -119,7 +121,7 @@ export default function Lever({ onSpin, disabled }: LeverProps) {
     <>
       <img
         ref={hintRef}
-        src="/pull-lever.png"
+        src={lang === 'en' ? '/pull-lever-en.png' : '/pull-lever.png'}
         alt="Pull lever"
         className="tp-pull-hint"
         draggable={false}
