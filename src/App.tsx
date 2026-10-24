@@ -40,13 +40,13 @@ export default function App() {
   return (
     <main className="min-h-screen overflow-x-hidden bg-[#f9f5eb] text-[#1a3c34]">
       {/* Top left language toggle */}
-      <div className="fixed top-4 left-6 z-20 max-md:left-3 max-md:top-3">
+      <div className="fixed top-4 left-6 z-20 max-md:hidden">
         <LanguageToggle />
       </div>
 
       {/* fixed tab bar, original style */}
       {mode !== 'timer' && (
-        <div className="fixed top-4 left-1/2 z-[15] flex max-w-[calc(100vw-8rem)] -translate-x-1/2 gap-2 overflow-x-auto rounded-[50px] bg-[rgba(26,60,52,0.08)] p-[5px] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden max-md:static max-md:top-auto max-md:left-auto max-md:z-auto max-md:mx-auto max-md:mt-12 max-md:w-full max-md:max-w-[calc(100vw-2rem)] max-md:translate-x-0 portrait:min-[769px]:max-[1024px]:static portrait:min-[769px]:max-[1024px]:top-auto portrait:min-[769px]:max-[1024px]:left-auto portrait:min-[769px]:max-[1024px]:z-auto portrait:min-[769px]:max-[1024px]:mx-auto portrait:min-[769px]:max-[1024px]:mt-12 portrait:min-[769px]:max-[1024px]:w-full portrait:min-[769px]:max-[1024px]:max-w-[calc(100vw-2rem)] portrait:min-[769px]:max-[1024px]:translate-x-0 max-md:gap-1.5 max-md:px-1 max-[480px]:gap-1 max-[480px]:px-0.5">
+        <div className="fixed top-4 left-1/2 z-[15] flex max-w-[calc(100vw-1.5rem)] -translate-x-1/2 items-center gap-2 overflow-x-auto rounded-[50px] bg-[rgba(26,60,52,0.08)] p-[5px] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden max-md:static max-md:top-auto max-md:left-auto max-md:z-auto max-md:mx-auto max-md:mt-4 max-md:w-full max-md:max-w-[calc(100vw-2rem)] max-md:translate-x-0 portrait:min-[769px]:max-[1024px]:static portrait:min-[769px]:max-[1024px]:top-auto portrait:min-[769px]:max-[1024px]:left-auto portrait:min-[769px]:max-[1024px]:z-auto portrait:min-[769px]:max-[1024px]:mx-auto portrait:min-[769px]:max-[1024px]:mt-4 portrait:min-[769px]:max-[1024px]:w-full portrait:min-[769px]:max-[1024px]:max-w-[calc(100vw-2rem)] portrait:min-[769px]:max-[1024px]:translate-x-0 max-md:gap-1.5 max-md:px-1 max-[480px]:gap-1 max-[480px]:px-0.5">
           {tabs.map((tab) => (
             <button
               key={tab.id}
@@ -60,6 +60,9 @@ export default function App() {
               {tab.label}
             </button>
           ))}
+          <div className="hidden max-md:block pl-1 shrink-0">
+            <LanguageToggle />
+          </div>
         </div>
       )}
 
