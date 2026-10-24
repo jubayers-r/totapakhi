@@ -6,6 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useLanguage } from '@/context/LanguageContext';
 import { usePersistence } from '@/hooks/usePersistence';
 import { useReel } from '@/hooks/useReel';
 import { ensureAudioContext, playClunk } from '@/lib/sounds';
@@ -28,6 +29,7 @@ export interface TopicsPanelProps {
 }
 
 export default function TopicsPanel({ onStartTimer }: TopicsPanelProps) {
+  const { lang, t } = useLanguage();
   const [categoryId, setCategoryId] = usePersistence<string>(
     'impromptu-category',
     'random'
@@ -50,8 +52,15 @@ export default function TopicsPanel({ onStartTimer }: TopicsPanelProps) {
       allowedGenders.includes(item.gender)
     );
     if (!eligible.length) eligible = source;
-    return eligible;
-  }, [categoryId, gender]);
+
+    // Map each item so its `topic` and `hints` match active language
+    // without touching useReel or altering its internal logic at all
+    return eligible.map((item) => ({
+      ...item,
+      topic: lang === 'en' && item.enTopic ? item.enTopic : item.topic,
+      hints: lang === 'en' && item.enHints ? item.enHints : item.hints,
+    }));
+  }, [categoryId, gender, lang]);
 
   const { windowRef, stripRef, spin, isSpinning, lastLanded } = useReel({
     topics: pool,
@@ -96,6 +105,27 @@ export default function TopicsPanel({ onStartTimer }: TopicsPanelProps) {
   }, [isSpinning, triggerSpin, effectiveTopic, onStartTimer]);
 
   const currentCategory = CATEGORIES[categoryId] || CATEGORIES.random;
+  const currentCategoryLabel =
+    lang === 'en' ? currentCategory.enLabel : currentCategory.label;
+
+  const genderOptions = [
+    {
+      value: 'all',
+      label: t('উরাধুরা (সবাই)', 'All (Wild Mix)'),
+    },
+    {
+      value: 'male',
+      label: t('বেডা মানুষ', 'For Boys'),
+    },
+    {
+      value: 'female',
+      label: t('বেডি মানুষ', 'For Girls'),
+    },
+  ];
+
+  const currentGenderLabel =
+    genderOptions.find((o) => o.value === gender)?.label ??
+    genderOptions[0].label;
 
   return (
     <div className="mx-auto flex min-h-screen w-full max-w-[1400px] items-center justify-center gap-12 px-12 pt-[calc(2rem+50px)] pb-8 max-md:min-h-fit max-md:flex-col max-md:gap-2 max-md:px-8 max-md:pt-2 max-md:pb-8 portrait:min-[769px]:max-[1024px]:min-h-fit portrait:min-[769px]:max-[1024px]:flex-col portrait:min-[769px]:max-[1024px]:gap-6 portrait:min-[769px]:max-[1024px]:px-8 portrait:min-[769px]:max-[1024px]:pt-2 portrait:min-[769px]:max-[1024px]:pb-8 max-[480px]:px-4 max-[480px]:pb-8">
@@ -103,12 +133,12 @@ export default function TopicsPanel({ onStartTimer }: TopicsPanelProps) {
       <div className="flex w-[450px] max-w-full shrink-0 flex-col items-center max-md:w-auto max-md:text-center max-md:pt-5 portrait:min-[769px]:max-[1024px]:w-auto portrait:min-[769px]:max-[1024px]:text-center">
         <img
           src="/totapakhi-logo.png"
-          alt="তোতাপাখি"
+          alt={t('তোতাপাখি', 'Totapakhi')}
           className="h-auto w-full max-w-[700px] portrait:min-[769px]:max-[1024px]:max-w-[480px] max-md:max-w-[400px] max-[480px]:max-w-[280px]"
         />
         <img
           src="/header.png"
-          alt="তোতাপাখি হেডার"
+          alt={t('তোতাপাখি হেডার', 'Totapakhi Header')}
           className="mt-4 h-auto w-full max-w-[400px] max-md:max-w-[340px] max-[480px]:max-w-[240px]"
         />
       </div>
@@ -120,7 +150,7 @@ export default function TopicsPanel({ onStartTimer }: TopicsPanelProps) {
           <DropdownMenu>
             <DropdownMenuTrigger className={triggerClass}>
               <Dice5 size={18} />
-              {currentCategory.label}
+              {currentCategoryLabel}
               <span className="ml-auto text-[0.6rem]">▼</span>
             </DropdownMenuTrigger>
             <DropdownMenuContent
@@ -131,7 +161,9 @@ export default function TopicsPanel({ onStartTimer }: TopicsPanelProps) {
                 className="rounded-lg p-2 text-left text-[15px] text-[#19483d] focus:bg-[#edf2e9]"
                 onClick={() => setCategoryId('random')}
               >
-                <span>🎲 {CATEGORIES.random.label}</span>
+                <span>
+                  🎲 {lang === 'en' ? CATEGORIES.random.enLabel : CATEGORIES.random.label}
+                </span>
               </DropdownMenuItem>
               {CATEGORY_LIST.map((category) => (
                 <DropdownMenuItem
@@ -139,9 +171,9 @@ export default function TopicsPanel({ onStartTimer }: TopicsPanelProps) {
                   key={category.id}
                   onClick={() => setCategoryId(category.id)}
                 >
-                  {category.label}
+                  {lang === 'en' ? category.enLabel : category.label}
                   <small className="mt-0.5 block text-[11px] text-[#75877f]">
-                    {category.subtitle}
+                    {lang === 'en' ? category.enSubtitle : category.subtitle}
                   </small>
                 </DropdownMenuItem>
               ))}
@@ -151,22 +183,14 @@ export default function TopicsPanel({ onStartTimer }: TopicsPanelProps) {
           <DropdownMenu>
             <DropdownMenuTrigger className={triggerClass}>
               <UserRound size={18} />
-              {gender === 'all'
-                ? 'উরাধুরা (সবাই)'
-                : gender === 'male'
-                  ? 'বেডা মানুষ'
-                  : 'বেডি মানুষ'}
+              {currentGenderLabel}
               <span className="ml-auto text-[0.6rem]">▼</span>
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="center"
               className="w-40 rounded-xl border border-[#d9ddcf] bg-[#f9f5eb] p-1.5 shadow-xl"
             >
-              {[
-                { value: 'all', label: 'উরাধুরা (সবাই)' },
-                { value: 'male', label: 'বেডা মানুষ' },
-                { value: 'female', label: 'বেডি মানুষ' },
-              ].map((option) => (
+              {genderOptions.map((option) => (
                 <DropdownMenuItem
                   key={option.value}
                   className="rounded-lg p-2 text-left text-sm focus:bg-[#edf2e9]"
@@ -198,13 +222,13 @@ export default function TopicsPanel({ onStartTimer }: TopicsPanelProps) {
                 disabled={isSpinning}
                 className="inline-block rounded-full border-2 border-[#1a3c34] bg-gradient-to-br from-[#2a5a4e] to-[#1a3c34] px-9 py-[0.6rem] font-display text-xl font-bold text-[#f9f5eb] shadow-[0_4px_12px_rgba(26,60,52,0.3)] transition-all hover:scale-[1.05] hover:shadow-[0_6px_16px_rgba(26,60,52,0.4)] active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
               >
-                ঘোরান চাকা!
+                {t('ঘোরান চাকা!', 'Spin the Wheel!')}
               </button>
               <button
                 onClick={() => onStartTimer(effectiveTopic?.topic ?? null)}
                 className="inline-block rounded-full border-2 border-[#1a3c34] bg-transparent px-9 py-[0.6rem] font-display text-xl font-bold text-[#1a3c34] transition-colors hover:bg-[#1a3c34] hover:text-[#f9f5eb]"
               >
-                টাইমার →
+                {t('টাইমার →', 'Timer →')}
               </button>
             </div>
           </div>
@@ -224,13 +248,13 @@ export default function TopicsPanel({ onStartTimer }: TopicsPanelProps) {
             disabled={isSpinning}
             className="min-w-0 flex-1 rounded-full border-2 border-[#1a3c34] bg-gradient-to-br from-[#2a5a4e] to-[#1a3c34] px-4 py-[0.75rem] font-display text-[1.15rem] font-bold text-[#f9f5eb] shadow-[0_4px_12px_rgba(26,60,52,0.3)] transition-transform active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 whitespace-nowrap tracking-wider max-[480px]:px-2 max-[480px]:py-[0.6rem] max-[480px]:text-[0.95rem] max-[480px]:tracking-wide"
           >
-            ঘোরান চাকা!
+            {t('ঘোরান চাকা!', 'Spin Wheel!')}
           </button>
           <button
             onClick={() => onStartTimer(effectiveTopic?.topic ?? null)}
             className="min-w-0 flex-1 rounded-full border-2 border-[#1a3c34] bg-transparent px-4 py-[0.75rem] font-display text-[1.15rem] font-bold text-[#1a3c34] transition-colors hover:bg-[#1a3c34] hover:text-[#f9f5eb] whitespace-nowrap tracking-wider max-[480px]:px-2 max-[480px]:py-[0.6rem] max-[480px]:text-[0.95rem] max-[480px]:tracking-wide"
           >
-            টাইমার →
+            {t('টাইমার →', 'Timer →')}
           </button>
         </div>
 
@@ -238,7 +262,7 @@ export default function TopicsPanel({ onStartTimer }: TopicsPanelProps) {
         {!isSpinning && effectiveTopic?.hints && effectiveTopic.hints.length > 0 && (
           <div className="w-full max-w-[620px] translate-x-[-38px] px-4 pt-8 max-md:translate-x-0 portrait:min-[769px]:max-[1024px]:translate-x-0">
             <p className="mb-2 text-center font-[cursive] text-xl font-extrabold text-[#e6a446] max-md:text-lg">
-              কথা শুরু করার ভাবনা (&apos;v&apos;)
+              {t("কথা শুরু করার ভাবনা ('v')", "Talking Points / Hints ('v')")}
             </p>
             <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
               {effectiveTopic.hints.map((hint, i) => (
@@ -264,14 +288,14 @@ export default function TopicsPanel({ onStartTimer }: TopicsPanelProps) {
         {!isSpinning &&
           (effectiveTopic ? (
             <span className="flex items-center gap-2">
-              <span className="kg-key kg-key-green">Space</span> আবার ঘোরান
+              <span className="kg-key kg-key-green">Space</span> {t('আবার ঘোরান', 'Spin again')}
               <span className="text-[rgba(26,60,52,0.3)]">·</span>
-              <span className="kg-key kg-key-gold">Enter</span> টাইমার
+              <span className="kg-key kg-key-gold">Enter</span> {t('টাইমার', 'Timer')}
             </span>
           ) : (
             <span className="flex items-center gap-2">
-              <span className="kg-key kg-key-green">Space</span> শর্টকাটে চাকা
-              ঘোরান
+              <span className="kg-key kg-key-green">Space</span>{' '}
+              {t('শর্টকাটে চাকা ঘোরান', 'Spin wheel shortcut')}
             </span>
           ))}
       </div>

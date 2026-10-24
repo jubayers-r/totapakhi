@@ -10,6 +10,8 @@ export interface Topic {
   category: string;
   gender: string;
   hints?: string[];
+  enTopic?: string;
+  enHints?: string[];
 }
 
 export type AppMode = 'topics' | 'interview' | 'timer';
