@@ -160,7 +160,10 @@ export default function TopicsPanel({ onStartTimer }: TopicsPanelProps) {
                 onClick={() => setCategoryId('random')}
               >
                 <span>
-                  🎲 {lang === 'en' ? CATEGORIES.random.enLabel : CATEGORIES.random.label}
+                  🎲{' '}
+                  {lang === 'en'
+                    ? CATEGORIES.random.enLabel
+                    : CATEGORIES.random.label}
                 </span>
               </DropdownMenuItem>
               {CATEGORY_LIST.map((category) => (
@@ -220,7 +223,7 @@ export default function TopicsPanel({ onStartTimer }: TopicsPanelProps) {
                 disabled={isSpinning}
                 className="inline-block rounded-full border-2 border-[#1a3c34] bg-gradient-to-br from-[#2a5a4e] to-[#1a3c34] px-9 py-[0.6rem] font-display text-xl font-bold text-[#f9f5eb] shadow-[0_4px_12px_rgba(26,60,52,0.3)] transition-all hover:scale-[1.05] hover:shadow-[0_6px_16px_rgba(26,60,52,0.4)] active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
               >
-                {t('ঘোরান চাকা!', 'Spin the Wheel!')}
+                {t('ঘোরান চাকা!', 'Spin!')}
               </button>
               <button
                 onClick={() => onStartTimer(effectiveTopic?.topic ?? null)}
@@ -246,7 +249,7 @@ export default function TopicsPanel({ onStartTimer }: TopicsPanelProps) {
             disabled={isSpinning}
             className="min-w-0 flex-1 rounded-full border-2 border-[#1a3c34] bg-gradient-to-br from-[#2a5a4e] to-[#1a3c34] px-4 py-[0.75rem] font-display text-[1.15rem] font-bold text-[#f9f5eb] shadow-[0_4px_12px_rgba(26,60,52,0.3)] transition-transform active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 whitespace-nowrap tracking-wider max-[480px]:px-2 max-[480px]:py-[0.6rem] max-[480px]:text-[0.95rem] max-[480px]:tracking-wide"
           >
-            {t('ঘোরান চাকা!', 'Spin Wheel!')}
+            {t('ঘোরান চাকা!', 'Spin!')}
           </button>
           <button
             onClick={() => onStartTimer(effectiveTopic?.topic ?? null)}
@@ -257,31 +260,33 @@ export default function TopicsPanel({ onStartTimer }: TopicsPanelProps) {
         </div>
 
         {/* ideas grid: hidden while spinning, shown again after each selection */}
-        {!isSpinning && effectiveTopic?.hints && effectiveTopic.hints.length > 0 && (
-          <div className="w-full max-w-[620px] translate-x-[-38px] px-4 pt-8 max-md:translate-x-0 portrait:min-[769px]:max-[1024px]:translate-x-0">
-            <p className="mb-2 text-center font-[cursive] text-xl font-extrabold text-[#e6a446] max-md:text-lg">
-              {t("কথা শুরু করার ভাবনা ('v')", "Talking Points / Hints ('v')")}
-            </p>
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
-              {effectiveTopic.hints.map((hint, i) => (
-                <div
-                  key={i}
-                  className="relative flex items-center overflow-hidden rounded-xl bg-[rgba(26,60,52,0.018)] p-3 text-left max-md:p-3 sm:min-h-[85px]"
-                >
-                  <p className="relative z-[1] w-full text-sm leading-snug text-[#1a3c34] max-md:text-[0.85rem]">
-                    {hint}
-                  </p>
-                  <span
-                    aria-hidden="true"
-                    className="pointer-events-none absolute font-display font-black leading-none bg-gradient-to-b from-[#e6a446]/35 to-transparent bg-clip-text text-transparent select-none right-1.5 bottom-0 text-[3.2rem] max-md:right-2 max-md:top-1/2 max-md:bottom-auto max-md:-translate-y-1/2 max-md:text-[1.7rem]"
+        {!isSpinning &&
+          effectiveTopic?.hints &&
+          effectiveTopic.hints.length > 0 && (
+            <div className="w-full max-w-[620px] translate-x-[-38px] px-4 pt-8 max-md:translate-x-0 portrait:min-[769px]:max-[1024px]:translate-x-0">
+              <p className="mb-2 text-center font-[cursive] text-xl font-extrabold text-[#e6a446] max-md:text-lg">
+                {t("কথা শুরু করার ভাবনা ('v')", "Talking Points / Hints ('v')")}
+              </p>
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
+                {effectiveTopic.hints.map((hint, i) => (
+                  <div
+                    key={i}
+                    className="relative flex items-center overflow-hidden rounded-xl bg-[rgba(26,60,52,0.018)] p-3 text-left max-md:p-3 sm:min-h-[85px]"
                   >
-                    {i + 1}
-                  </span>
-                </div>
-              ))}
+                    <p className="relative z-[1] w-full text-sm leading-snug text-[#1a3c34] max-md:text-[0.85rem]">
+                      {hint}
+                    </p>
+                    <span
+                      aria-hidden="true"
+                      className="pointer-events-none absolute font-display font-black leading-none bg-gradient-to-b from-[#e6a446]/35 to-transparent bg-clip-text text-transparent select-none right-1.5 bottom-0 text-[3.2rem] max-md:right-2 max-md:top-1/2 max-md:bottom-auto max-md:-translate-y-1/2 max-md:text-[1.7rem]"
+                    >
+                      {i + 1}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
+          )}
       </div>
 
       {/* corner hint: minimal guide like bruno-simon */}
@@ -289,9 +294,11 @@ export default function TopicsPanel({ onStartTimer }: TopicsPanelProps) {
         {!isSpinning &&
           (effectiveTopic ? (
             <span className="flex items-center gap-2">
-              <span className="kg-key kg-key-green">Space</span> {t('আবার ঘোরান', 'Spin again')}
+              <span className="kg-key kg-key-green">Space</span>{' '}
+              {t('আবার ঘোরান', 'Spin again')}
               <span className="text-[rgba(26,60,52,0.3)]">·</span>
-              <span className="kg-key kg-key-gold">Enter</span> {t('টাইমার', 'Timer')}
+              <span className="kg-key kg-key-gold">Enter</span>{' '}
+              {t('টাইমার', 'Timer')}
             </span>
           ) : (
             <span className="flex items-center gap-2">
@@ -299,6 +306,14 @@ export default function TopicsPanel({ onStartTimer }: TopicsPanelProps) {
               {t('শর্টকাটে চাকা ঘোরান', 'Spin wheel shortcut')}
             </span>
           ))}
+      </div>
+
+      {/* culture & context disclaimer */}
+      <div className="fixed bottom-4 right-6 z-10 select-none text-xs font-medium text-[rgba(26,60,52,0.55)] max-md:static max-md:mt-6 max-md:mb-2 max-md:w-full max-md:text-center max-md:text-[0.78rem]">
+        {t(
+          'বাংলাদেশি সমাজ আর পারিপার্শ্বিকতা মাথায় রেখে তৈরি— দেশের বাইরে বড় হয়ে থাকলে হয়তো পুরোটা রিলেট করতে পারবেন না',
+          'Made with Bangladeshi (🇧🇩) context & quirks — might not match as much outside it'
+        )}
       </div>
     </div>
   );
