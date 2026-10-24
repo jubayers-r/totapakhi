@@ -53,8 +53,6 @@ export default function TopicsPanel({ onStartTimer }: TopicsPanelProps) {
     );
     if (!eligible.length) eligible = source;
 
-    // Map each item so its `topic` and `hints` match active language
-    // without touching useReel or altering its internal logic at all
     return eligible.map((item) => ({
       ...item,
       topic: lang === 'en' && item.enTopic ? item.enTopic : item.topic,
@@ -268,17 +266,17 @@ export default function TopicsPanel({ onStartTimer }: TopicsPanelProps) {
               {effectiveTopic.hints.map((hint, i) => (
                 <div
                   key={i}
-                  className="relative overflow-hidden rounded-xl bg-[rgba(26,60,52,0.03)] p-3 text-left shadow-sm max-md:p-2.5"
+                  className="relative flex items-center overflow-hidden rounded-xl bg-[rgba(26,60,52,0.03)] p-3 text-left shadow-sm max-md:py-3 max-md:px-4 sm:min-h-[85px] sm:items-start"
                 >
+                  <p className="relative z-[1] text-sm leading-snug text-[#1a3c34] pr-10 sm:pr-0 max-md:text-[0.85rem]">
+                    {hint}
+                  </p>
                   <span
                     aria-hidden="true"
-                    className="pointer-events-none absolute right-1 -bottom-2 font-display text-[4.5rem] font-black leading-none bg-gradient-to-b from-[#e6a446]/25 to-transparent bg-clip-text text-transparent select-none max-md:text-[3.5rem]"
+                    className="pointer-events-none absolute font-display font-black leading-none bg-gradient-to-b from-[#e6a446]/35 to-transparent bg-clip-text text-transparent select-none right-1 bottom-0 text-[4.5rem] max-md:right-3 max-md:top-1/2 max-md:bottom-auto max-md:-translate-y-1/2 max-md:text-[2.2rem]"
                   >
                     {i + 1}
                   </span>
-                  <p className="relative z-[1] text-sm leading-snug text-[#1a3c34] max-md:text-[0.82rem]">
-                    {hint}
-                  </p>
                 </div>
               ))}
             </div>
