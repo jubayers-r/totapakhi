@@ -268,7 +268,7 @@ export default function TopicsPanel({ onStartTimer }: TopicsPanelProps) {
               {effectiveTopic.hints.map((hint, i) => (
                 <div
                   key={i}
-                  className="flex items-start gap-2 rounded-xl border border-[rgba(26,60,52,0.12)] bg-[rgba(26,60,52,0.03)] p-3 text-left max-md:p-2.5"
+                  className="flex items-start gap-2 rounded-xl bg-[rgba(26,60,52,0.03)] p-3 text-left max-md:p-2.5"
                 >
                   <span className="font-display text-lg font-bold text-[#e6a446] max-md:text-base">
                     {i + 1}
